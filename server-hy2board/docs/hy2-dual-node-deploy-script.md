@@ -66,6 +66,7 @@ sudo bash deploy-hy2-dual-node.sh \
 | `HY2_SKIP_INSTALL` | `0` | `1` 时不执行官方安装脚本 |
 | `HY2_APPLY_UFW` | `1` | UFW active 时自动放行端口 |
 | `HY2_DRY_RUN` | `0` | `1` 时只打印动作，不修改服务器 |
+| `HY2_PACKAGE_MANAGER` | 自动探测 | 可强制指定 `apt`、`dnf`、`yum`、`apk` |
 
 可复用 secret：
 
@@ -81,6 +82,31 @@ HY2_OBFS_PASSWORD=...
 HY2_DRY_RUN=1 HY2_NODE_PREFIX=TEST HY2_PUBLIC_IP=203.0.113.10 \
   bash server-hy2board/scripts/deploy-hy2-dual-node.sh --dry-run --skip-install --no-ufw
 ```
+
+## 环境补全
+
+脚本会先补齐最小运行环境，然后再安装或复用 Hysteria：
+
+- Debian / Ubuntu：`apt-get`
+- Fedora / RHEL 新版：`dnf`
+- CentOS / RHEL 旧版：`yum`
+- Alpine：`apk`
+
+会补齐的基础命令包括：
+
+```text
+ca-certificates
+curl
+openssl
+iproute2 / iproute
+coreutils
+gawk
+sed
+util-linux
+shadow / shadow-utils
+```
+
+如果系统没有受支持的包管理器，脚本会停止并提示手动安装依赖。
 
 ## 防火墙
 

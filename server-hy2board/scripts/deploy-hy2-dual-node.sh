@@ -30,8 +30,11 @@ HY2_SKIP_INSTALL="${HY2_SKIP_INSTALL:-0}"
 HY2_FORCE="${HY2_FORCE:-0}"
 HY2_APPLY_UFW="${HY2_APPLY_UFW:-1}"
 HY2_OUTPUT_FILE="${HY2_OUTPUT_FILE:-}"
+HY2_PACKAGE_MANAGER="${HY2_PACKAGE_MANAGER:-}"
+HY2_ASSUME_MISSING_DEPS="${HY2_ASSUME_MISSING_DEPS:-0}"
 
 BACKUP_TS="$(date +%Y%m%d%H%M%S)"
+HY2_INSTALLED_THIS_RUN=0
 
 usage() {
   cat <<EOF
@@ -61,6 +64,7 @@ Environment overrides:
   HY2_OBFS_SECRET        Reuse an obfs traffic secret instead of generating one
   HY2_OBFS_PASSWORD      Reuse a salamander password instead of generating one
   HY2_MASQUERADE_URL     Masquerade proxy URL. Default: ${HY2_MASQUERADE_URL}
+  HY2_PACKAGE_MANAGER    Force package manager: apt, dnf, yum, apk
 
 Example:
   sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh
@@ -169,6 +173,13 @@ need_cmd() {
   command -v "$1" >/dev/null 2>&1 || fail "missing required command: $1"
 }
 
+has_cmd() {
+  if [[ "${HY2_ASSUME_MISSING_DEPS}" == "1" ]]; then
+    return 1
+  fi
+  command -v "$1" >/dev/null 2>&1
+}
+
 validate_number() {
   local name="$1"
   local value="$2"
@@ -192,6 +203,7 @@ preflight() {
 
   [[ "$(uname -s)" == "Linux" || "${HY2_DRY_RUN}" == "1" ]] || fail "Linux is required"
   need_cmd bash
+  bootstrap_dependencies
   need_cmd curl
   need_cmd openssl
   need_cmd awk
@@ -212,6 +224,82 @@ preflight() {
       fi
       ;;
   esac
+}
+
+detect_package_manager() {
+  if [[ -n "${HY2_PACKAGE_MANAGER}" ]]; then
+    printf '%s\n' "${HY2_PACKAGE_MANAGER}"
+    return 0
+  fi
+  if command -v apt-get >/dev/null 2>&1; then
+    printf 'apt\n'
+    return 0
+  fi
+  if command -v dnf >/dev/null 2>&1; then
+    printf 'dnf\n'
+    return 0
+  fi
+  if command -v yum >/dev/null 2>&1; then
+    printf 'yum\n'
+    return 0
+  fi
+  if command -v apk >/dev/null 2>&1; then
+    printf 'apk\n'
+    return 0
+  fi
+  if [[ "${HY2_DRY_RUN}" == "1" ]]; then
+    printf 'apt\n'
+    return 0
+  fi
+  fail "no supported package manager found. Install curl openssl iproute2 coreutils gawk sed manually."
+}
+
+install_dependency_packages() {
+  local pm="$1"
+  log "installing missing base packages with ${pm}"
+  case "${pm}" in
+    apt)
+      run env DEBIAN_FRONTEND=noninteractive apt-get update
+      run env DEBIAN_FRONTEND=noninteractive apt-get install -y ca-certificates curl openssl iproute2 coreutils gawk sed util-linux
+      ;;
+    dnf)
+      run dnf install -y ca-certificates curl openssl iproute coreutils gawk sed util-linux shadow-utils
+      ;;
+    yum)
+      run yum install -y ca-certificates curl openssl iproute coreutils gawk sed util-linux shadow-utils
+      ;;
+    apk)
+      run apk add --no-cache ca-certificates curl openssl iproute2 coreutils gawk sed util-linux shadow
+      ;;
+    *)
+      fail "unsupported package manager: ${pm}"
+      ;;
+  esac
+}
+
+bootstrap_dependencies() {
+  local required=(curl openssl awk sed date)
+  if [[ "${HY2_DRY_RUN}" != "1" ]]; then
+    required+=(systemctl ss install)
+  fi
+
+  local missing=()
+  local cmd
+  for cmd in "${required[@]}"; do
+    if ! has_cmd "${cmd}"; then
+      missing+=("${cmd}")
+    fi
+  done
+
+  if [[ "${#missing[@]}" -eq 0 ]]; then
+    log "base dependencies present"
+    return 0
+  fi
+
+  warn "missing base commands: ${missing[*]}"
+  local pm
+  pm="$(detect_package_manager)"
+  install_dependency_packages "${pm}"
 }
 
 port_in_use() {
@@ -287,6 +375,7 @@ install_hysteria() {
     echo "[dry-run] bash <(curl -fsSL https://get.hy2.sh/)"
   else
     bash <(curl -fsSL https://get.hy2.sh/)
+    HY2_INSTALLED_THIS_RUN=1
   fi
 }
 
@@ -301,7 +390,11 @@ backup_if_exists() {
   local path="$1"
   [[ -e "${path}" ]] || return 0
   local backup="${path}.bak-${BACKUP_TS}"
-  if [[ "${HY2_FORCE}" != "1" ]]; then
+  if [[ "${HY2_DRY_RUN}" == "1" && "${HY2_FORCE}" != "1" && "${HY2_INSTALLED_THIS_RUN}" != "1" ]]; then
+    warn "${path} already exists; real run requires --force to backup and overwrite"
+    return 0
+  fi
+  if [[ "${HY2_FORCE}" != "1" && "${HY2_INSTALLED_THIS_RUN}" != "1" ]]; then
     fail "${path} already exists. Use --force to backup and overwrite."
   fi
   run cp -a "${path}" "${backup}"
