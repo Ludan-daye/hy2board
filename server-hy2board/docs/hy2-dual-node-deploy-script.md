@@ -33,20 +33,20 @@ server-hy2board/scripts/deploy-hy2-dual-node.sh
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Ludan-daye/hy2board/main/server-hy2board/scripts/deploy-hy2-dual-node.sh -o deploy-hy2-dual-node.sh
-sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh
+sudo HY2_SERVER_NAME=JP4 bash deploy-hy2-dual-node.sh
 ```
 
 如果本地已有脚本：
 
 ```bash
-sudo HY2_NODE_PREFIX=JP4 bash server-hy2board/scripts/deploy-hy2-dual-node.sh
+sudo HY2_SERVER_NAME=JP4 bash server-hy2board/scripts/deploy-hy2-dual-node.sh
 ```
 
 ## 常用参数
 
 ```bash
 sudo bash deploy-hy2-dual-node.sh \
-  --prefix JP4 \
+  --server-name JP4 \
   --auth-url https://vpn.linkbyfree.com/api/auth/hy2 \
   --sni bing.com \
   --sort-base 30
@@ -56,7 +56,7 @@ sudo bash deploy-hy2-dual-node.sh \
 
 | 变量 | 默认值 | 说明 |
 |---|---|---|
-| `HY2_NODE_PREFIX` | `NODE` | 节点名前缀，例如 `JP4` |
+| `HY2_SERVER_NAME` | `SERVER` | 服务器名/线路名，例如 `JP4` |
 | `HY2_AUTH_URL` | `https://vpn.linkbyfree.com/api/auth/hy2` | hy2board HY2 HTTP 鉴权地址 |
 | `HY2_SNI` | `bing.com` | 证书 CN 和客户端 SNI |
 | `HY2_MASQUERADE_URL` | `https://www.bing.com` | HY2 masquerade 代理地址 |
@@ -79,7 +79,7 @@ HY2_OBFS_PASSWORD=...
 ## 干跑检查
 
 ```bash
-HY2_DRY_RUN=1 HY2_NODE_PREFIX=TEST HY2_PUBLIC_IP=203.0.113.10 \
+HY2_DRY_RUN=1 HY2_SERVER_NAME=TEST HY2_PUBLIC_IP=203.0.113.10 \
   bash server-hy2board/scripts/deploy-hy2-dual-node.sh --dry-run --skip-install --no-ufw
 ```
 

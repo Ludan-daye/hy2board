@@ -13,7 +13,7 @@
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Ludan-daye/hy2board/main/server-hy2board/scripts/deploy-hy2-dual-node.sh -o deploy-hy2-dual-node.sh
-sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh
+sudo HY2_SERVER_NAME=JP4 bash deploy-hy2-dual-node.sh
 ```
 
 部署完成后，脚本会输出两条可直接填入 hy2board 后台的节点信息：
@@ -28,7 +28,7 @@ JP4-obfs
 如果服务器以前已经部署过 HY2，需要覆盖旧配置：
 
 ```bash
-sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh --force
+sudo HY2_SERVER_NAME=JP4 bash deploy-hy2-dual-node.sh --force
 ```
 
 脚本会先备份旧配置，再写入新配置。
@@ -38,7 +38,7 @@ sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh --force
 只检查流程和输出，不修改服务器：
 
 ```bash
-HY2_DRY_RUN=1 HY2_NODE_PREFIX=TEST HY2_PUBLIC_IP=203.0.113.10 \
+HY2_DRY_RUN=1 HY2_SERVER_NAME=TEST HY2_PUBLIC_IP=203.0.113.10 \
   bash deploy-hy2-dual-node.sh --dry-run --skip-install --no-ufw
 ```
 
@@ -46,7 +46,7 @@ HY2_DRY_RUN=1 HY2_NODE_PREFIX=TEST HY2_PUBLIC_IP=203.0.113.10 \
 
 | 变量 | 说明 | 默认值 |
 |---|---|---|
-| `HY2_NODE_PREFIX` | 节点名前缀，例如 `JP4` | `NODE` |
+| `HY2_SERVER_NAME` | 服务器名/线路名，例如 `JP4` | `SERVER` |
 | `HY2_AUTH_URL` | hy2board HY2 鉴权地址 | `https://vpn.linkbyfree.com/api/auth/hy2` |
 | `HY2_SNI` | 客户端 SNI / 自签证书 CN | `bing.com` |
 | `HY2_PUBLIC_IP` | 输出给 hy2board 的 Host | 自动探测 |
@@ -56,7 +56,7 @@ HY2_DRY_RUN=1 HY2_NODE_PREFIX=TEST HY2_PUBLIC_IP=203.0.113.10 \
 复用已有 secret：
 
 ```bash
-sudo HY2_NODE_PREFIX=JP4 \
+sudo HY2_SERVER_NAME=JP4 \
   HY2_PLAIN_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx \
   HY2_OBFS_SECRET=yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy \
   HY2_OBFS_PASSWORD=zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz \

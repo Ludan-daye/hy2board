@@ -6,7 +6,7 @@ VERSION="1.0.0"
 HY2_AUTH_URL="${HY2_AUTH_URL:-https://vpn.linkbyfree.com/api/auth/hy2}"
 HY2_SNI="${HY2_SNI:-bing.com}"
 HY2_MASQUERADE_URL="${HY2_MASQUERADE_URL:-https://www.bing.com}"
-HY2_NODE_PREFIX="${HY2_NODE_PREFIX:-NODE}"
+HY2_SERVER_NAME="${HY2_SERVER_NAME:-${HY2_NODE_PREFIX:-SERVER}}"
 HY2_PUBLIC_IP="${HY2_PUBLIC_IP:-}"
 
 HY2_PLAIN_PORT="${HY2_PLAIN_PORT:-443}"
@@ -44,7 +44,8 @@ Usage:
   sudo bash deploy-hy2-dual-node.sh [options]
 
 Options:
-  --prefix NAME          Node name prefix, e.g. JP4 -> JP4-plain / JP4-obfs
+  --server-name NAME     Server name, e.g. JP4 -> JP4-plain / JP4-obfs
+  --prefix NAME          Deprecated alias of --server-name
   --auth-url URL         hy2board auth URL. Default: ${HY2_AUTH_URL}
   --sni NAME             TLS SNI and self-signed certificate CN. Default: ${HY2_SNI}
   --public-ip IP         Public IP/domain to print in hy2board node info
@@ -67,7 +68,7 @@ Environment overrides:
   HY2_PACKAGE_MANAGER    Force package manager: apt, dnf, yum, apk
 
 Example:
-  sudo HY2_NODE_PREFIX=JP4 bash deploy-hy2-dual-node.sh
+  sudo HY2_SERVER_NAME=JP4 bash deploy-hy2-dual-node.sh
 EOF
 }
 
@@ -101,7 +102,11 @@ parse_args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --prefix)
-        HY2_NODE_PREFIX="${2:-}"
+        HY2_SERVER_NAME="${2:-}"
+        shift 2
+        ;;
+      --server-name)
+        HY2_SERVER_NAME="${2:-}"
         shift 2
         ;;
       --auth-url)
@@ -190,7 +195,7 @@ preflight() {
   log "preflight checks"
   require_value "HY2_AUTH_URL" "${HY2_AUTH_URL}"
   require_value "HY2_SNI" "${HY2_SNI}"
-  require_value "HY2_NODE_PREFIX" "${HY2_NODE_PREFIX}"
+  require_value "HY2_SERVER_NAME" "${HY2_SERVER_NAME}"
   validate_number "HY2_PLAIN_PORT" "${HY2_PLAIN_PORT}"
   validate_number "HY2_OBFS_PORT" "${HY2_OBFS_PORT}"
   validate_number "HY2_PLAIN_TRAFFIC_PORT" "${HY2_PLAIN_TRAFFIC_PORT}"
@@ -611,7 +616,7 @@ SNI: ${HY2_SNI}
 Public Host: ${HY2_PUBLIC_IP}
 
 plain node:
-  Name: ${HY2_NODE_PREFIX}-plain
+  Name: ${HY2_SERVER_NAME}-plain
   Host: ${HY2_PUBLIC_IP}
   Port: ${HY2_PLAIN_PORT}
   SNI: ${HY2_SNI}
@@ -624,7 +629,7 @@ plain node:
   Sort Order: ${plain_sort}
 
 obfs node:
-  Name: ${HY2_NODE_PREFIX}-obfs
+  Name: ${HY2_SERVER_NAME}-obfs
   Host: ${HY2_PUBLIC_IP}
   Port: ${HY2_OBFS_PORT}
   SNI: ${HY2_SNI}
