@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import api from "@/api/client"
-import { Plus, Trash2, Circle, Edit2, X, Activity, CheckCircle2, AlertTriangle, WifiOff, Clock3, ClipboardPaste } from "lucide-react"
+import { Plus, Trash2, Circle, Edit2, X, Activity, CheckCircle2, AlertTriangle, WifiOff, Clock3, ClipboardPaste, Wifi } from "lucide-react"
 import { parseDeployOutput, type NodeImportForm } from "@/utils/nodeImport"
+import { fmtSpeed } from "@/lib/format"
+
+// Live per-node connection data merged from /admin/stats.
+type LiveStat = { online: number; tx: number; rx: number }
+type LiveSpeed = { up: number; down: number }
 
 const emptyForm = {
   name: "", host: "", port: 443, password: "", sni: "bing.com",
@@ -20,11 +25,36 @@ export default function Nodes() {
   const [importText, setImportText] = useState("")
   const [importPreview, setImportPreview] = useState<NodeImportForm[]>([])
   const [importing, setImporting] = useState(false)
+  const [live, setLive] = useState<Record<number, LiveStat>>({})
+  const [speed, setSpeed] = useState<Record<number, LiveSpeed>>({})
+  const prevRef = useRef<{ t: number; byId: Record<number, LiveStat> } | null>(null)
 
-  const load = () => api.get("/admin/nodes").then((res) => setNodes(res.data))
+  const load = async () => {
+    const [nres, sres] = await Promise.all([api.get("/admin/nodes"), api.get("/admin/stats")])
+    setNodes(nres.data)
+    const now = Date.now()
+    const byId: Record<number, LiveStat> = {}
+    for (const s of (sres.data?.nodes || [])) {
+      let tx = 0, rx = 0
+      if (s.traffic) for (const t of Object.values(s.traffic) as { tx: number; rx: number }[]) { tx += t.tx; rx += t.rx }
+      byId[s.id] = { online: s.online || 0, tx, rx }
+    }
+    setLive(byId)
+    const prev = prevRef.current
+    if (prev) {
+      const dt = (now - prev.t) / 1000
+      const sp: Record<number, LiveSpeed> = {}
+      if (dt > 0) for (const id of Object.keys(byId)) {
+        const p = prev.byId[+id]
+        if (p) sp[+id] = { up: Math.max(0, byId[+id].tx - p.tx) / dt, down: Math.max(0, byId[+id].rx - p.rx) / dt }
+      }
+      setSpeed(sp)
+    }
+    prevRef.current = { t: now, byId }
+  }
   useEffect(() => {
     load()
-    const t = setInterval(load, 10000)
+    const t = setInterval(load, 3000)
     return () => clearInterval(t)
   }, [])
   const showMsg = (t: string) => { setMsg(t); setErr(""); setTimeout(() => setMsg(""), 2500) }
@@ -296,12 +326,18 @@ obfs node:
       {showAdd && !editId && renderForm(false)}
       {editId && renderForm(true)}
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-3 mb-4">
         <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
           <div className="flex items-center justify-between text-zinc-500 text-xs mb-2">
             <span>监控节点</span><Activity size={14} />
           </div>
           <div className="text-2xl font-semibold text-white">{summary.total}</div>
+        </div>
+        <div className="bg-zinc-900 border border-blue-500/20 rounded-lg p-3">
+          <div className="flex items-center justify-between text-blue-300 text-xs mb-2">
+            <span>实时在线</span><Wifi size={14} />
+          </div>
+          <div className="text-2xl font-semibold text-blue-300">{Object.values(live).reduce((s, v) => s + v.online, 0)}</div>
         </div>
         <div className="bg-zinc-900 border border-green-500/20 rounded-lg p-3">
           <div className="flex items-center justify-between text-green-400 text-xs mb-2">
@@ -336,6 +372,8 @@ obfs node:
             <th className="text-left p-4 w-[190px]">Monitor</th>
             <th className="text-left p-4">Name</th>
             <th className="text-left p-4">Host:Port</th>
+            <th className="text-left p-4">在线</th>
+            <th className="text-left p-4">实时 ↑/↓</th>
             <th className="text-left p-4">SNI</th>
             <th className="text-left p-4">Obfs</th>
             <th className="text-left p-4">Traffic API</th>
@@ -362,6 +400,21 @@ obfs node:
                   {n.insecure && <span className="text-xs text-zinc-500">insecure</span>}
                 </td>
                 <td className="p-4 text-zinc-400">{n.host}:{n.port}</td>
+                <td className="p-4">
+                  {live[n.ID] ? (
+                    live[n.ID].online > 0
+                      ? <span className="text-green-400 font-medium">{live[n.ID].online}</span>
+                      : <span className="text-zinc-600">0</span>
+                  ) : <span className="text-zinc-600">-</span>}
+                </td>
+                <td className="p-4 text-xs font-mono whitespace-nowrap">
+                  {speed[n.ID] && (speed[n.ID].up > 0 || speed[n.ID].down > 0) ? (
+                    <>
+                      <span className="text-sky-400">↑{fmtSpeed(speed[n.ID].up)}</span>
+                      <span className="text-emerald-400 ml-2">↓{fmtSpeed(speed[n.ID].down)}</span>
+                    </>
+                  ) : <span className="text-zinc-600">-</span>}
+                </td>
                 <td className="p-4 text-zinc-400">{n.sni || "-"}</td>
                 <td className="p-4">
                   {n.obfs_type ? (
