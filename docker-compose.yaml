@@ -1,0 +1,10 @@
+version: "3"
+services:
+  hy2board:
+    build: .
+    network_mode: host
+    volumes:
+      - ./data:/app/data
+      - ./config.yaml:/app/config.yaml
+      - ./downloads:/app/downloads
+    restart: unless-stopped

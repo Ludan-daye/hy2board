@@ -1,0 +1,9 @@
+data/
+backups/
+web/node_modules/
+web/dist/
+.gocache/
+*.db
+*.bak*
+hy2board
+
