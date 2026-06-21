@@ -60,9 +60,5 @@ func VlessClashBlock(u model.User, n model.Node) string {
       short-id: "%s"`, VlessName(n), n.Host, n.VlessPort, uuid, n.RealitySNI, n.RealityPubkey, n.RealityShortID)
 }
 
-// VlessSurgeLine renders a Surge proxy line.
-func VlessSurgeLine(u model.User, n model.Node) string {
-	uuid := util.VlessUUID(u.Username)
-	return fmt.Sprintf("%s = vless, %s, %d, username=%s, tls=true, sni=%s, reality-pubkey=%s, reality-short-id=%s, flow=xtls-rprx-vision",
-		VlessName(n), n.Host, n.VlessPort, uuid, n.RealitySNI, n.RealityPubkey, n.RealityShortID)
-}
+// NOTE: no Surge renderer — Surge has no `vless` proxy type, so VLESS is only
+// emitted in the Clash and URI formats (whose clients support VLESS+Reality).

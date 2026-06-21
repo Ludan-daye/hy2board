@@ -30,12 +30,6 @@ func TestVlessClashSurgeAndURILines(t *testing.T) {
 		t.Fatalf("bad clash block: %s", clash)
 	}
 
-	surge := VlessSurgeLine(u, n)
-	if !strings.Contains(surge, "vless,") || !strings.Contains(surge, "reality-short-id=07204836") ||
-		!strings.Contains(surge, "sni=www.microsoft.com") {
-		t.Fatalf("bad surge line: %s", surge)
-	}
-
 	// the display name is suffixed -T so it never collides with the HY2 node
 	if !strings.Contains(uri, "HK1-plain-T") {
 		t.Fatalf("vless name should be suffixed -T: %s", uri)

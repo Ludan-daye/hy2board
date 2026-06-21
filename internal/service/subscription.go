@@ -49,10 +49,9 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 		}
 		lines = append(lines, proxy)
 		names[i] = n.Name
-		if NodeHasVless(n) {
-			lines = append(lines, VlessSurgeLine(user, n))
-			vlessNames = append(vlessNames, VlessName(n))
-		}
+		// VLESS not emitted for Surge: Surge has no `vless` proxy type (it would
+		// error "Unknown proxy type: vless" and break the whole config). Surge users
+		// get HY2 only; the VLESS fallback is delivered via the Clash/URI formats.
 
 		if hasChain {
 			chainName := n.Name + "-AI"
