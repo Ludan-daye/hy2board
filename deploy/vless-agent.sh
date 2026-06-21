@@ -27,13 +27,16 @@ sync_users() {
   echo "$clients" | jq -e 'type=="array"' >/dev/null 2>&1 || {
     echo "[vless-agent] bad client list; skipping"; return 0; }
 
+  # Apply users to the vless-reality inbound (uuid) and the trojan inbound
+  # (password). The trojan selector is a no-op on nodes without a trojan inbound.
   new="$(jq --argjson c "$clients" '
     (.inbounds[] | select(.tag=="vless-reality") | .settings.clients) =
-      ($c | map({id:.uuid, email:.email, flow:"xtls-rprx-vision"}))
+      ($c | map({id:.uuid, email:.email, flow:"xtls-rprx-vision"})) |
+    (.inbounds[] | select(.tag=="trojan") | .settings.clients) =
+      ($c | map({password:.password, email:.email}))
   ' "$XRAY_CONFIG")"
 
-  if diff -q <(jq -S '.inbounds[]|select(.tag=="vless-reality")|.settings.clients' "$XRAY_CONFIG") \
-             <(echo "$new" | jq -S '.inbounds[]|select(.tag=="vless-reality")|.settings.clients') >/dev/null 2>&1; then
+  if diff -q <(jq -S . "$XRAY_CONFIG") <(echo "$new" | jq -S .) >/dev/null 2>&1; then
     return 0  # unchanged
   fi
   echo "$new" > "$XRAY_CONFIG"
