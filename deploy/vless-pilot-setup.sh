@@ -98,6 +98,15 @@ systemctl daemon-reload
 systemctl enable --now xray.service vless-agent-stats.service vless-agent-sync.timer
 systemctl start vless-agent-sync.service || true
 
+# Open local ufw if active: VLESS port to anyone, stats port only from the panel.
+PANEL_IP="${PANEL_IP:-76.13.217.10}"
+if command -v ufw >/dev/null && ufw status 2>/dev/null | grep -q "Status: active"; then
+  ufw allow "${VLESS_PORT}/tcp" >/dev/null 2>&1 || true
+  ufw allow from "${PANEL_IP}" to any port "${STATS_PORT}" proto tcp >/dev/null 2>&1 || true
+  ufw reload >/dev/null 2>&1 || true
+  echo "ufw: opened ${VLESS_PORT}/tcp + ${STATS_PORT}/tcp from ${PANEL_IP}"
+fi
+
 PUBIP="$(curl -4 -fsS --max-time 6 ifconfig.me || echo '<THIS_NODE_IP>')"
 cat <<DONE
 
