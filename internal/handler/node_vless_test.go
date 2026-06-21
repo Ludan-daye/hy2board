@@ -53,7 +53,7 @@ func TestVlessClientsReturnsOnlyActiveUsers(t *testing.T) {
 	}
 	var got []map[string]string
 	json.Unmarshal(w.Body.Bytes(), &got)
-	if len(got) != 1 || got[0]["email"] != "alice" || got[0]["uuid"] == "" {
-		t.Fatalf("expected only active alice with uuid, got %#v", got)
+	if len(got) != 1 || got[0]["email"] != "alice" || got[0]["uuid"] == "" || got[0]["password"] == "" {
+		t.Fatalf("expected only active alice with uuid+password, got %#v", got)
 	}
 }

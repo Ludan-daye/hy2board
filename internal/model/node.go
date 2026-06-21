@@ -25,4 +25,9 @@ type Node struct {
 	RealitySNI       string `gorm:"default:''" json:"reality_sni"`
 	VlessStatsAPI    string `gorm:"default:''" json:"vless_stats_api"`
 	VlessStatsSecret string `gorm:"default:''" json:"-"`
+
+	// Trojan TCP fallback (Surge clients)
+	TrojanEnabled bool   `gorm:"default:false" json:"trojan_enabled"`
+	TrojanPort    int    `gorm:"default:0" json:"trojan_port"`
+	TrojanSNI     string `gorm:"default:''" json:"trojan_sni"`
 }

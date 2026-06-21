@@ -28,7 +28,11 @@ func VlessClients(c *gin.Context) {
 		if !u.IsActive() {
 			continue
 		}
-		out = append(out, gin.H{"uuid": util.VlessUUID(u.Username), "email": u.Username})
+		out = append(out, gin.H{
+			"uuid":     util.VlessUUID(u.Username),
+			"password": util.TrojanPassword(u.Username),
+			"email":    u.Username,
+		})
 	}
 	c.JSON(http.StatusOK, out)
 }

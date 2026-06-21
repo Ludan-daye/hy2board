@@ -49,9 +49,11 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 		}
 		lines = append(lines, proxy)
 		names[i] = n.Name
-		// VLESS not emitted for Surge: Surge has no `vless` proxy type (it would
-		// error "Unknown proxy type: vless" and break the whole config). Surge users
-		// get HY2 only; the VLESS fallback is delivered via the Clash/URI formats.
+		// Surge has no `vless` type, so the TCP fallback here is Trojan (<node>-T).
+		if NodeHasTrojan(n) {
+			lines = append(lines, TrojanSurgeLine(user, n))
+			vlessNames = append(vlessNames, VlessName(n))
+		}
 
 		if hasChain {
 			chainName := n.Name + "-AI"
