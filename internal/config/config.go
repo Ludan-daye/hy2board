@@ -39,6 +39,10 @@ type TelegramConfig struct {
 	Enabled  bool   `yaml:"enabled"`
 }
 
+type NodeConfig struct {
+	Secret string `yaml:"secret"`
+}
+
 type Config struct {
 	Server     ServerConfig     `yaml:"server"`
 	Admin      AdminConfig      `yaml:"admin"`
@@ -46,7 +50,10 @@ type Config struct {
 	Database   DatabaseConfig   `yaml:"database"`
 	ProxyChain ProxyChainConfig `yaml:"proxy_chain"`
 	Telegram   TelegramConfig   `yaml:"telegram"`
+	Node       NodeConfig       `yaml:"node"`
 }
+
+func (c *Config) HasNodeSecret() bool { return c.Node.Secret != "" }
 
 func (c *Config) JWTExpiry() time.Duration {
 	d, err := time.ParseDuration(c.JWT.Expiry)

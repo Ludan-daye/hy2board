@@ -39,6 +39,7 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 	lines = append(lines, "[Proxy]")
 	names := make([]string, len(nodes))
 	chainNames := make([]string, 0)
+	vlessNames := make([]string, 0)
 
 	for i, n := range nodes {
 		proxy := fmt.Sprintf("%s = hysteria2, %s, %d, password=%s, skip-cert-verify=%t, sni=%s",
@@ -48,6 +49,10 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 		}
 		lines = append(lines, proxy)
 		names[i] = n.Name
+		if NodeHasVless(n) {
+			lines = append(lines, VlessSurgeLine(user, n))
+			vlessNames = append(vlessNames, VlessName(n))
+		}
 
 		if hasChain {
 			chainName := n.Name + "-AI"
@@ -59,6 +64,7 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 	}
 	lines = append(lines, "")
 
+	names = append(names, vlessNames...)
 	lines = append(lines, "[Proxy Group]")
 	lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupAuto, strings.Join(names, ", "), proxyTestURL))
 	lines = append(lines, fmt.Sprintf("%s = select, %s", GroupManual, strings.Join(names, ", ")))
@@ -113,6 +119,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 
 	names := make([]string, len(nodes))
 	chainNames := make([]string, 0)
+	vlessNames := make([]string, 0)
 
 	for i, n := range nodes {
 		lines = append(lines, fmt.Sprintf("  - name: \"%s\"", n.Name))
@@ -128,6 +135,11 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 		}
 		lines = append(lines, "")
 		names[i] = n.Name
+		if NodeHasVless(n) {
+			lines = append(lines, VlessClashBlock(user, n))
+			lines = append(lines, "")
+			vlessNames = append(vlessNames, VlessName(n))
+		}
 
 		if hasChain {
 			chainName := n.Name + "-AI"
@@ -143,6 +155,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 		}
 	}
 
+	names = append(names, vlessNames...)
 	lines = append(lines, "proxy-groups:")
 	lines = append(lines, "  - name: "+GroupAuto)
 	lines = append(lines, "    type: url-test")
@@ -252,9 +265,12 @@ func GenerateShadowrocketWithCustomRules(user model.User, nodes []model.Node, cu
 	lines = append(lines, "[Proxy]")
 	names := make([]string, len(nodes))
 	chainNames := make([]string, 0)
+	vlessNames := make([]string, 0)
 	for i, n := range nodes {
 		lines = append(lines, shadowrocketProxyLine(user, n))
 		names[i] = n.Name
+		// VLESS not wired for Shadowrocket: its .conf uses key=value syntax, not
+		// Surge's. Shadowrocket users get the VLESS node via the URI format instead.
 
 		if hasChain {
 			chainName := n.Name + "-AI"
@@ -266,6 +282,7 @@ func GenerateShadowrocketWithCustomRules(user model.User, nodes []model.Node, cu
 	}
 	lines = append(lines, "")
 
+	names = append(names, vlessNames...)
 	lines = append(lines, "[Proxy Group]")
 	lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupAuto, strings.Join(names, ", "), proxyTestURL))
 	lines = append(lines, fmt.Sprintf("%s = select, %s", GroupManual, strings.Join(names, ", ")))
@@ -344,6 +361,9 @@ func generateURI(user model.User, nodes []model.Node, scheme string, includeAllo
 		u.RawQuery = q.Encode()
 		u.Fragment = n.Name
 		uris = append(uris, u.String())
+		if NodeHasVless(n) {
+			uris = append(uris, VlessURILine(user, n))
+		}
 	}
 	return strings.Join(uris, "\n")
 }

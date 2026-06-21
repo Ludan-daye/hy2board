@@ -16,4 +16,13 @@ type Node struct {
 	TrafficSecret string `json:"traffic_secret"`
 	Healthy      bool   `gorm:"default:true" json:"healthy"`
 	SortOrder    int    `gorm:"default:0" json:"sort_order"`
+
+	// VLESS+Reality fallback (Phase 1). Private key never stored here.
+	VlessEnabled     bool   `gorm:"default:false" json:"vless_enabled"`
+	VlessPort        int    `gorm:"default:0" json:"vless_port"`
+	RealityPubkey    string `gorm:"default:''" json:"reality_pubkey"`
+	RealityShortID   string `gorm:"default:''" json:"reality_shortid"`
+	RealitySNI       string `gorm:"default:''" json:"reality_sni"`
+	VlessStatsAPI    string `gorm:"default:''" json:"vless_stats_api"`
+	VlessStatsSecret string `gorm:"default:''" json:"-"`
 }

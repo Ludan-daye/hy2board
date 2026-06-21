@@ -33,6 +33,7 @@ func main() {
 
 	service.StartHealthChecker(30 * time.Second)
 	service.StartTrafficCache(3 * time.Second)
+	service.StartVlessTrafficPoller(3 * time.Second)
 	service.StartAutoResetScheduler(60 * time.Second)
 	service.StartUserBucketCache(30 * time.Second)
 	service.StartTrafficLogger(60 * time.Second)
@@ -75,6 +76,7 @@ func main() {
 	r.GET("/api/sub/:token", handler.Subscribe)
 	r.HEAD("/api/sub/:token", handler.Subscribe)
 	r.POST("/api/auth/hy2", handler.Hy2Auth)
+	r.GET("/api/node/vless/clients", handler.VlessClients)
 	r.GET("/api/downloads", handler.ListDownloads)
 	r.Static("/dl", "./downloads")
 	r.GET("/api/app/version", handler.AppVersion)
