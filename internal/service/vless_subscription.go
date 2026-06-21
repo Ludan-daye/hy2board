@@ -42,20 +42,22 @@ func VlessURILine(u model.User, n model.Node) string {
 // VlessClashBlock renders a Clash/mihomo proxy entry (YAML list item).
 func VlessClashBlock(u model.User, n model.Node) string {
 	uuid := util.VlessUUID(u.Username)
+	// String values are quoted so an all-digit short-id isn't parsed as a YAML
+	// number and a leading-"-" public-key isn't mis-parsed.
 	return fmt.Sprintf(`  - name: "%s"
     type: vless
     server: %s
     port: %d
-    uuid: %s
+    uuid: "%s"
     network: tcp
     tls: true
     udp: true
     flow: xtls-rprx-vision
-    servername: %s
+    servername: "%s"
     client-fingerprint: chrome
     reality-opts:
-      public-key: %s
-      short-id: %s`, VlessName(n), n.Host, n.VlessPort, uuid, n.RealitySNI, n.RealityPubkey, n.RealityShortID)
+      public-key: "%s"
+      short-id: "%s"`, VlessName(n), n.Host, n.VlessPort, uuid, n.RealitySNI, n.RealityPubkey, n.RealityShortID)
 }
 
 // VlessSurgeLine renders a Surge proxy line.
