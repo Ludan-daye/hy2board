@@ -51,6 +51,7 @@ type CreateUserRequest struct {
 	Username     string `json:"username" binding:"required"`
 	Password     string `json:"password"`
 	TrafficLimit int64  `json:"traffic_limit"`
+	MaxIPs       int    `json:"max_ips"`
 	ExpiresAt    string `json:"expires_at"`
 	Enabled      *bool  `json:"enabled"`
 	ChainProxy   *bool  `json:"chain_proxy"`
@@ -60,6 +61,7 @@ type UpdateUserRequest struct {
 	// Existing
 	Username     *string `json:"username"`
 	TrafficLimit *int64  `json:"traffic_limit"`
+	MaxIPs       *int    `json:"max_ips"`
 	ExpiresAt    string  `json:"expires_at"`
 	Enabled      *bool   `json:"enabled"`
 	ChainProxy   *bool   `json:"chain_proxy"`
@@ -187,6 +189,7 @@ func CreateUser(c *gin.Context) {
 	user := model.User{
 		Username:     req.Username,
 		TrafficLimit: req.TrafficLimit,
+		MaxIPs:       req.MaxIPs,
 		Enabled:      true,
 	}
 
@@ -244,6 +247,9 @@ func UpdateUser(c *gin.Context) {
 	}
 	if req.TrafficLimit != nil {
 		updates["traffic_limit"] = *req.TrafficLimit
+	}
+	if req.MaxIPs != nil {
+		updates["max_ips"] = *req.MaxIPs
 	}
 	if req.Enabled != nil {
 		updates["enabled"] = *req.Enabled

@@ -14,6 +14,7 @@ import (
 type CreatePlanRequest struct {
 	Name          string `json:"name" binding:"required"`
 	TrafficLimit  int64  `json:"traffic_limit"`
+	MaxIPs        int    `json:"max_ips"`
 	DurationDays  int    `json:"duration_days"`
 	NodeIDs       string `json:"node_ids"`
 	RuleAI        bool   `json:"rule_ai"`
@@ -34,6 +35,7 @@ type CreatePlanRequest struct {
 type UpdatePlanRequest struct {
 	Name          *string `json:"name"`
 	TrafficLimit  *int64  `json:"traffic_limit"`
+	MaxIPs        *int    `json:"max_ips"`
 	DurationDays  *int    `json:"duration_days"`
 	NodeIDs       *string `json:"node_ids"`
 	RuleAI        *bool   `json:"rule_ai"`
@@ -113,6 +115,7 @@ func CreatePlan(c *gin.Context) {
 	p := model.Plan{
 		Name:          req.Name,
 		TrafficLimit:  req.TrafficLimit,
+		MaxIPs:        req.MaxIPs,
 		DurationDays:  req.DurationDays,
 		NodeIDs:       req.NodeIDs,
 		RuleAI:        req.RuleAI,
@@ -168,6 +171,9 @@ func UpdatePlan(c *gin.Context) {
 	}
 	if req.TrafficLimit != nil {
 		updates["traffic_limit"] = *req.TrafficLimit
+	}
+	if req.MaxIPs != nil {
+		updates["max_ips"] = *req.MaxIPs
 	}
 	if req.DurationDays != nil {
 		updates["duration_days"] = *req.DurationDays
