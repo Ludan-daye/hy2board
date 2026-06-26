@@ -6,6 +6,7 @@ export interface Plan {
   ID?: number
   name: string
   traffic_limit: number
+  max_ips?: number
   duration_days: number
   price_cents?: number
   node_ids: string
@@ -27,6 +28,7 @@ type Tab = "basic" | "access" | "rules" | "ip"
 interface FormState {
   name: string
   traffic_limit: number
+  max_ips: number
   duration_days: number
   price_cents: number
   node_ids: string
@@ -54,6 +56,7 @@ interface Props {
 const blankForm: FormState = {
   name: "",
   traffic_limit: 0,
+  max_ips: 0,
   duration_days: 30,
   price_cents: 0,
   node_ids: "all",
@@ -83,6 +86,7 @@ export default function PlanEditModal({
       ? {
           name: plan.name,
           traffic_limit: plan.traffic_limit,
+          max_ips: plan.max_ips || 0,
           duration_days: plan.duration_days,
           price_cents: plan.price_cents || 0,
           node_ids: plan.node_ids,
@@ -121,6 +125,7 @@ export default function PlanEditModal({
         const body = {
           name: form.name,
           traffic_limit: form.traffic_limit,
+          max_ips: form.max_ips,
           duration_days: form.duration_days,
           price_cents: form.price_cents,
           node_ids: form.node_ids,
@@ -208,6 +213,13 @@ export default function PlanEditModal({
                 className={inputCls}
               />
             </div>
+            <input
+              type="number"
+              placeholder="同时在线 IP 上限 (0=不限)"
+              value={form.max_ips || ""}
+              onChange={(e) => setForm((f) => ({ ...f, max_ips: +e.target.value }))}
+              className={inputCls}
+            />
             <input
               type="number"
               placeholder="Sort order"

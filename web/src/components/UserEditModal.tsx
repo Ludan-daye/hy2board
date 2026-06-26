@@ -19,6 +19,7 @@ export interface EditableUser {
   // Added for Access + Rules tabs
   traffic_limit: number
   traffic_used: number
+  max_ips?: number
   expires_at: string
   enabled: boolean
   auto_reset?: boolean
@@ -458,6 +459,7 @@ function AccessTab({
 }) {
   const [form, setForm] = useState({
     traffic_limit_gb: user.traffic_limit / 1024 / 1024 / 1024,
+    max_ips: user.max_ips || 0,
     expires_at: (user.expires_at || "").split("T")[0],
     enabled: user.enabled,
     auto_reset: user.auto_reset || false,
@@ -480,6 +482,7 @@ function AccessTab({
       setErr("")
       const body: Record<string, unknown> = {
         traffic_limit: Math.round(form.traffic_limit_gb * 1024 * 1024 * 1024),
+        max_ips: form.max_ips,
         enabled: form.enabled,
         auto_reset: form.auto_reset,
         expires_at: form.expires_at,
@@ -512,6 +515,18 @@ function AccessTab({
           min={0}
           value={form.traffic_limit_gb}
           onChange={(e) => setForm({ ...form, traffic_limit_gb: +e.target.value })}
+          className={inputCls + " mt-1"}
+        />
+      </div>
+      <div>
+        <label className="text-xs text-zinc-500 uppercase tracking-wider">
+          同时在线 IP 上限 (0 = 不限)
+        </label>
+        <input
+          type="number"
+          min={0}
+          value={form.max_ips}
+          onChange={(e) => setForm({ ...form, max_ips: +e.target.value })}
           className={inputCls + " mt-1"}
         />
       </div>
