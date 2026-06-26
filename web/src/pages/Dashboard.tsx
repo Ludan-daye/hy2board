@@ -40,8 +40,8 @@ interface UserRow {
 
 interface HistoryPoint { time: string; tx: number; rx: number }
 
-const COLORS = ["#1a2b6b", "#243b8f", "#2d4ea6", "#d4a017", "#c4880b", "#8b6914"]
-const STATUS_COLORS = { active: "#22c55e", expired: "#f59e0b", over: "#ef4444", disabled: "#71717a" }
+const COLORS = ["#C96442", "#4C7A87", "#C2843E", "#6E8B6A", "#B5573A", "#8B6F47"]
+const STATUS_COLORS = { active: "#3F8A4D", expired: "#C2843E", over: "#BE3A31", disabled: "#9A968C" }
 
 function fmt(bytes: number): string {
   if (bytes === 0) return "0 B"
@@ -62,15 +62,15 @@ function daysUntil(dateStr: string): number {
 }
 
 const tooltipStyle = {
-  contentStyle: { background: "#111318", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, fontSize: 12, color: "#fff" },
-  itemStyle: { color: "#999" },
+  contentStyle: { background: "#FFFFFF", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 12, color: "#141413" },
+  itemStyle: { color: "#6B6862" },
 }
 
 function Card({ icon: Icon, title, children, right }: {
   icon: React.ElementType; title: string; children: React.ReactNode; right?: React.ReactNode
 }) {
   return (
-    <div className="rounded-xl p-5" style={{ background: "#111318", border: "1px solid rgba(20,20,19,0.08)" }}>
+    <div className="rounded-xl p-5 bg-surface" style={{ border: "1px solid var(--color-border)" }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Icon size={14} className="text-zinc-500" />
@@ -89,9 +89,9 @@ function HealthCell({ label, value, tone = "text-ink", onClick }: {
 }) {
   return (
     <div onClick={onClick}
-      className={"px-3 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg" + (onClick ? " cursor-pointer hover:border-zinc-600" : "")}>
-      <div className="text-[11px] text-zinc-500 mb-0.5">{label}</div>
-      <div className={"text-lg font-semibold " + tone}>{value}</div>
+      className={"px-3 py-2.5 bg-surface border border-border rounded-lg" + (onClick ? " cursor-pointer hover:border-border-strong" : "")}>
+      <div className="text-[11px] text-ink-faint mb-0.5">{label}</div>
+      <div className={"text-xl font-serif font-semibold " + tone}>{value}</div>
     </div>
   )
 }
@@ -214,14 +214,14 @@ export default function Dashboard() {
       {/* Zone 1: health bar — is everything OK at a glance */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
         <HealthCell label="节点 healthy/total" value={`${stats.healthy_nodes}/${stats.total_nodes}`}
-          tone={stats.healthy_nodes < stats.total_nodes ? "text-amber-400" : "text-ink"} />
-        <HealthCell label="在线" value={totalOnline} tone="text-blue-300" />
+          tone={stats.healthy_nodes < stats.total_nodes ? "text-warning" : "text-ink"} />
+        <HealthCell label="在线" value={totalOnline} tone="text-ink" />
         <HealthCell label="告警" value={totalAlerts}
-          tone={totalAlerts > 0 ? "text-red-400" : "text-zinc-500"} onClick={() => navigate("/alerts")} />
+          tone={totalAlerts > 0 ? "text-danger" : "text-ink-faint"} onClick={() => navigate("/alerts")} />
         <HealthCell label="本月收入" value={incomeCur ? yuan(incomeCur.total_cents) : "¥0.00"}
           onClick={() => navigate("/finance")} />
-        <HealthCell label="实时 ↑" value={lastPoint ? fmtSpeed(lastPoint.tx) : "-"} tone="text-sky-400" />
-        <HealthCell label="实时 ↓" value={lastPoint ? fmtSpeed(lastPoint.rx) : "-"} tone="text-emerald-400" />
+        <HealthCell label="实时 ↑" value={lastPoint ? fmtSpeed(lastPoint.tx) : "-"} tone="text-clay" />
+        <HealthCell label="实时 ↓" value={lastPoint ? fmtSpeed(lastPoint.rx) : "-"} tone="text-[#4C7A87]" />
       </div>
 
       {/* Zone 2: needs attention (or all-clear) */}
@@ -282,7 +282,7 @@ export default function Dashboard() {
           )}
         </div>
       ) : (
-        <div className="mb-4 px-4 py-3 bg-zinc-900 border border-zinc-800 rounded-lg text-sm text-emerald-400">
+        <div className="mb-4 px-4 py-3 bg-surface border border-border rounded-lg text-sm text-success">
           ✅ 一切正常 — 没有到期/超限用户或离线节点
         </div>
       )}
@@ -298,26 +298,26 @@ export default function Dashboard() {
                 <AreaChart data={history}>
                   <defs>
                     <linearGradient id="txG" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#1a2b6b" stopOpacity={0.5} />
-                      <stop offset="95%" stopColor="#1a2b6b" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#C96442" stopOpacity={0.5} />
+                      <stop offset="95%" stopColor="#C96442" stopOpacity={0} />
                     </linearGradient>
                     <linearGradient id="rxG" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#d4a017" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#d4a017" stopOpacity={0} />
+                      <stop offset="5%" stopColor="#4C7A87" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#4C7A87" stopOpacity={0} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(20,20,19,0.06)" />
-                  <XAxis dataKey="time" tick={{ fontSize: 10, fill: "#555" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 10, fill: "#555" }} tickFormatter={(v) => fmt(v)} width={55} axisLine={false} tickLine={false} />
+                  <XAxis dataKey="time" tick={{ fontSize: 10, fill: "#9A968C" }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fontSize: 10, fill: "#9A968C" }} tickFormatter={(v) => fmt(v)} width={55} axisLine={false} tickLine={false} />
                   <Tooltip {...tooltipStyle} formatter={(v: unknown) => fmtSpeed(Number(v))} />
-                  <Area type="monotone" dataKey="tx" stroke="#1a2b6b" fill="url(#txG)" name="Upload" strokeWidth={2} />
-                  <Area type="monotone" dataKey="rx" stroke="#d4a017" fill="url(#rxG)" name="Download" strokeWidth={2} />
+                  <Area type="monotone" dataKey="tx" stroke="#C96442" fill="url(#txG)" name="Upload" strokeWidth={2} />
+                  <Area type="monotone" dataKey="rx" stroke="#4C7A87" fill="url(#rxG)" name="Download" strokeWidth={2} />
                 </AreaChart>
               </ResponsiveContainer>
             )}
             <div className="flex gap-5 mt-3">
-              <span className="flex items-center gap-2 text-[11px] text-zinc-500"><span className="w-3 h-[2px] rounded" style={{ background: "#1a2b6b" }} />Upload</span>
-              <span className="flex items-center gap-2 text-[11px] text-zinc-500"><span className="w-3 h-[2px] rounded" style={{ background: "#d4a017" }} />Download</span>
+              <span className="flex items-center gap-2 text-[11px] text-zinc-500"><span className="w-3 h-[2px] rounded" style={{ background: "#C96442" }} />Upload</span>
+              <span className="flex items-center gap-2 text-[11px] text-zinc-500"><span className="w-3 h-[2px] rounded" style={{ background: "#4C7A87" }} />Download</span>
             </div>
           </Card>
         </div>
@@ -341,12 +341,12 @@ export default function Dashboard() {
                         <span className="font-mono text-zinc-300">{fmtSpeed(u.total)}</span>
                       </div>
                       <div className="flex h-1.5 rounded-full overflow-hidden bg-zinc-900">
-                        <div className="h-full" style={{ width: upPct + "%", background: "#1a2b6b" }} />
-                        <div className="h-full" style={{ width: downPct + "%", background: "#d4a017" }} />
+                        <div className="h-full" style={{ width: upPct + "%", background: "#C96442" }} />
+                        <div className="h-full" style={{ width: downPct + "%", background: "#4C7A87" }} />
                       </div>
                       <div className="flex gap-3 text-[10px] text-zinc-600 mt-0.5 font-mono">
-                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-sm" style={{ background: "#1a2b6b" }} />↑{fmtSpeed(u.up)}</span>
-                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-sm" style={{ background: "#d4a017" }} />↓{fmtSpeed(u.down)}</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-sm" style={{ background: "#C96442" }} />↑{fmtSpeed(u.up)}</span>
+                        <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-sm" style={{ background: "#4C7A87" }} />↓{fmtSpeed(u.down)}</span>
                       </div>
                     </div>
                   )
@@ -400,12 +400,12 @@ export default function Dashboard() {
                     const pct = (uTotal / max) * 100
                     return (
                       <div key={u.ID} className="relative">
-                        <div className="absolute inset-0 rounded" style={{ width: pct + "%", background: "rgba(43, 71, 107, 0.25)" }} />
+                        <div className="absolute inset-0 rounded" style={{ width: pct + "%", background: "rgba(201,100,66,0.12)" }} />
                         <div className="relative flex items-center justify-between px-2 py-1.5 text-[12px]">
                           <span className="flex items-center gap-2 truncate">
                             <span className="text-zinc-500 font-mono w-4">{i + 1}.</span>
                             <span className="text-ink truncate">{u.username}</span>
-                            {u.chain_proxy && <span className="text-[9px] px-1 py-0.5 rounded bg-purple-500/10 text-purple-400">AI</span>}
+                            {u.chain_proxy && <span className="text-[9px] px-1 py-0.5 rounded bg-clay/10 text-clay">AI</span>}
                           </span>
                           <span className="font-mono text-zinc-300 ml-2">{fmt(uTotal)}</span>
                         </div>
@@ -490,11 +490,11 @@ export default function Dashboard() {
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={nodeBarData} barGap={4}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(20,20,19,0.06)" />
-                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#666" }} axisLine={false} tickLine={false} />
-                    <YAxis tick={{ fontSize: 10, fill: "#555" }} tickFormatter={(v) => fmt(v)} width={60} axisLine={false} tickLine={false} />
+                    <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#9A968C" }} axisLine={false} tickLine={false} />
+                    <YAxis tick={{ fontSize: 10, fill: "#9A968C" }} tickFormatter={(v) => fmt(v)} width={60} axisLine={false} tickLine={false} />
                     <Tooltip {...tooltipStyle} formatter={(v: unknown) => fmt(Number(v))} />
-                    <Bar dataKey="upload" fill="#1a2b6b" radius={[4, 4, 0, 0]} name="Upload" />
-                    <Bar dataKey="download" fill="#d4a017" radius={[4, 4, 0, 0]} name="Download" />
+                    <Bar dataKey="upload" fill="#C96442" radius={[4, 4, 0, 0]} name="Upload" />
+                    <Bar dataKey="download" fill="#4C7A87" radius={[4, 4, 0, 0]} name="Download" />
                   </BarChart>
                 </ResponsiveContainer>
               </Card>
