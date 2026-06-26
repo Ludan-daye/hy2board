@@ -127,20 +127,20 @@ export default function Login() {
   return (
     <>
       <link
-        href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700;900&family=Gasoek+One&family=Noto+Serif+SC:wght@200;400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Alumni+Sans:wght@400;700;900&family=Noto+Serif+SC:wght@200;400;700&display=swap"
         rel="stylesheet"
       />
 
       <style>{`
         :root {
-          --accent: #2b47ff;
-          --accent-light: #9499ff;
-          --gold: #ffae00;
-          --black: #000;
-          --white: #fff;
+          --accent: #C96442;
+          --accent-light: #E0A893;
+          --gold: #C2843E;
+          --black: #141413;
+          --white: #FAF9F5;
           --border: 2px;
           --font-head: "Alumni Sans", sans-serif;
-          --font-alt: "Gasoek One", sans-serif;
+          --font-alt: "Fraunces", serif;
           --font-body: "Noto Serif SC", serif;
         }
         @keyframes loadUp {
@@ -270,7 +270,7 @@ export default function Login() {
                 <div style={{ fontFamily: "var(--font-head)", fontSize: "clamp(20px, 2.5vw, 32px)", fontWeight: 900, color: "#fff", marginTop: 4 }}>
                   {s.value}
                   {s.label === "STATUS" && (
-                    <span className="inline-block w-2 h-2 rounded-full ml-2 align-middle" style={{ background: "#22c55e", boxShadow: "0 0 8px #22c55e" }} />
+                    <span className="inline-block w-2 h-2 rounded-full ml-2 align-middle" style={{ background: "#3F8A4D", boxShadow: "0 0 8px #3F8A4D" }} />
                   )}
                 </div>
               </div>
@@ -353,9 +353,9 @@ export default function Login() {
                     fontWeight: 700,
                     letterSpacing: "0.15em",
                     textTransform: "uppercase",
-                    color: "#dc2626",
-                    border: "var(--border) solid #dc2626",
-                    background: "rgba(220,38,38,0.04)",
+                    color: "#BE3A31",
+                    border: "var(--border) solid #BE3A31",
+                    background: "rgba(190,58,49,0.05)",
                   }}
                 >
                   ✕ {error}
