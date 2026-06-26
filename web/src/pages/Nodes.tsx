@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import api from "@/api/client"
 import { Plus, Trash2, Circle, Edit2, X, Activity, CheckCircle2, AlertTriangle, WifiOff, Clock3, ClipboardPaste, Wifi } from "lucide-react"
 import { parseDeployOutput, type NodeImportForm } from "@/utils/nodeImport"
+import { parseRegister } from "@/utils/nodeRegister"
 import { fmtSpeed } from "@/lib/format"
 
 // Live per-node connection data merged from /admin/stats.
@@ -12,6 +13,9 @@ const emptyForm = {
   name: "", host: "", port: 443, password: "", sni: "bing.com",
   insecure: true, obfs_type: "", obfs_password: "",
   traffic_api: "", traffic_secret: "", sort_order: 0,
+  vless_enabled: false, vless_port: 443, reality_pubkey: "", reality_shortid: "",
+  reality_sni: "www.apple.com", vless_stats_api: "", vless_stats_secret: "",
+  trojan_enabled: false, trojan_port: 8443, trojan_sni: "www.apple.com",
 }
 
 export default function Nodes() {
@@ -21,6 +25,8 @@ export default function Nodes() {
   const [editId, setEditId] = useState<number | null>(null)
   const [msg, setMsg] = useState("")
   const [err, setErr] = useState("")
+  const [regText, setRegText] = useState("")
+  const [showReg, setShowReg] = useState(false)
   const [showImport, setShowImport] = useState(false)
   const [importText, setImportText] = useState("")
   const [importPreview, setImportPreview] = useState<NodeImportForm[]>([])
@@ -140,7 +146,20 @@ export default function Nodes() {
       sni: n.sni || "", insecure: n.insecure, obfs_type: n.obfs_type || "",
       obfs_password: n.obfs_password || "", traffic_api: n.traffic_api || "",
       traffic_secret: n.traffic_secret || "", sort_order: n.sort_order || 0,
+      vless_enabled: !!n.vless_enabled, vless_port: n.vless_port || 443,
+      reality_pubkey: n.reality_pubkey || "", reality_shortid: n.reality_shortid || "",
+      reality_sni: n.reality_sni || "www.apple.com", vless_stats_api: n.vless_stats_api || "",
+      vless_stats_secret: "",
+      trojan_enabled: !!n.trojan_enabled, trojan_port: n.trojan_port || 8443,
+      trojan_sni: n.trojan_sni || "www.apple.com",
     })
+  }
+
+  const applyRegister = () => {
+    const f = parseRegister(regText)
+    if (Object.keys(f).length === 0) { showErr("未识别到注册信息"); return }
+    setForm(prev => ({ ...prev, ...f }))
+    setShowReg(false); setRegText(""); showMsg("已填入注册信息")
   }
 
   const cancelEdit = () => { setEditId(null); setForm({ ...emptyForm }) }
@@ -292,6 +311,57 @@ obfs node:
           <label className="text-xs text-zinc-500 mb-1 block">Traffic API Secret</label>
           <input value={form.traffic_secret} onChange={e => setForm({...form, traffic_secret: e.target.value})} className={inputCls + " w-full"} />
         </div>
+      </div>
+
+      <div className="border-t border-zinc-800 mt-2 pt-3 mb-3">
+        <div className="flex items-center justify-between mb-2">
+          <h4 className="text-sm font-medium text-zinc-300">TCP 回落 (VLESS / Trojan)</h4>
+          <button type="button" onClick={() => setShowReg(s => !s)}
+            className="text-xs px-2 py-1 rounded bg-zinc-800 text-zinc-300 hover:bg-zinc-700">📋 粘贴注册信息</button>
+        </div>
+        {showReg && (
+          <div className="mb-3">
+            <textarea value={regText} onChange={e => setRegText(e.target.value)} rows={6}
+              placeholder="粘贴 vless-pilot-setup / trojan-add 打印的 REGISTER 段..."
+              className={inputCls + " w-full font-mono text-xs"} />
+            <button type="button" onClick={applyRegister}
+              className="mt-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">填入</button>
+          </div>
+        )}
+        <label className="flex items-center gap-2 text-sm text-zinc-300 mb-2">
+          <input type="checkbox" checked={form.vless_enabled}
+            onChange={e => setForm({...form, vless_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-black" />
+          启用 VLESS-Reality
+        </label>
+        {form.vless_enabled && (
+          <div className="grid grid-cols-3 gap-3 mb-3 pl-6">
+            <div><label className="text-xs text-zinc-500 mb-1 block">VLESS Port</label>
+              <input type="number" value={form.vless_port} onChange={e => setForm({...form, vless_port: +e.target.value})} className={inputCls + " w-full"} /></div>
+            <div><label className="text-xs text-zinc-500 mb-1 block">Reality SNI</label>
+              <input value={form.reality_sni} onChange={e => setForm({...form, reality_sni: e.target.value})} className={inputCls + " w-full"} /></div>
+            <div><label className="text-xs text-zinc-500 mb-1 block">Short ID</label>
+              <input value={form.reality_shortid} onChange={e => setForm({...form, reality_shortid: e.target.value})} className={inputCls + " w-full"} /></div>
+            <div className="col-span-3"><label className="text-xs text-zinc-500 mb-1 block">Reality Public Key</label>
+              <input value={form.reality_pubkey} onChange={e => setForm({...form, reality_pubkey: e.target.value})} className={inputCls + " w-full font-mono text-xs"} /></div>
+            <div className="col-span-2"><label className="text-xs text-zinc-500 mb-1 block">Stats API</label>
+              <input value={form.vless_stats_api} onChange={e => setForm({...form, vless_stats_api: e.target.value})} className={inputCls + " w-full"} /></div>
+            <div><label className="text-xs text-zinc-500 mb-1 block">Stats 密钥 (留空不变)</label>
+              <input value={form.vless_stats_secret} placeholder="已设置 / 留空不变" onChange={e => setForm({...form, vless_stats_secret: e.target.value})} className={inputCls + " w-full"} /></div>
+          </div>
+        )}
+        <label className="flex items-center gap-2 text-sm text-zinc-300 mb-2">
+          <input type="checkbox" checked={form.trojan_enabled}
+            onChange={e => setForm({...form, trojan_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-black" />
+          启用 Trojan
+        </label>
+        {form.trojan_enabled && (
+          <div className="grid grid-cols-2 gap-3 pl-6">
+            <div><label className="text-xs text-zinc-500 mb-1 block">Trojan Port</label>
+              <input type="number" value={form.trojan_port} onChange={e => setForm({...form, trojan_port: +e.target.value})} className={inputCls + " w-full"} /></div>
+            <div><label className="text-xs text-zinc-500 mb-1 block">Trojan SNI</label>
+              <input value={form.trojan_sni} onChange={e => setForm({...form, trojan_sni: e.target.value})} className={inputCls + " w-full"} /></div>
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2">

@@ -21,6 +21,17 @@ type NodeRequest struct {
 	TrafficAPI    string `json:"traffic_api"`
 	TrafficSecret string `json:"traffic_secret"`
 	SortOrder     int    `json:"sort_order"`
+
+	VlessEnabled     *bool  `json:"vless_enabled"`
+	VlessPort        int    `json:"vless_port"`
+	RealityPubkey    string `json:"reality_pubkey"`
+	RealityShortID   string `json:"reality_shortid"`
+	RealitySNI       string `json:"reality_sni"`
+	VlessStatsAPI    string `json:"vless_stats_api"`
+	VlessStatsSecret string `json:"vless_stats_secret"`
+	TrojanEnabled    *bool  `json:"trojan_enabled"`
+	TrojanPort       int    `json:"trojan_port"`
+	TrojanSNI        string `json:"trojan_sni"`
 }
 
 type NodeProbeView struct {
@@ -89,6 +100,17 @@ func CreateNode(c *gin.Context) {
 		TrafficSecret: req.TrafficSecret,
 		SortOrder:     req.SortOrder,
 		Healthy:       true,
+
+		VlessEnabled:     req.VlessEnabled != nil && *req.VlessEnabled,
+		VlessPort:        req.VlessPort,
+		RealityPubkey:    req.RealityPubkey,
+		RealityShortID:   req.RealityShortID,
+		RealitySNI:       req.RealitySNI,
+		VlessStatsAPI:    req.VlessStatsAPI,
+		VlessStatsSecret: req.VlessStatsSecret,
+		TrojanEnabled:    req.TrojanEnabled != nil && *req.TrojanEnabled,
+		TrojanPort:       req.TrojanPort,
+		TrojanSNI:        req.TrojanSNI,
 	}
 	database.DB.Create(&node)
 	auditAdminAction(c, "node.create", "node", node.ID, node.Name, map[string]interface{}{
@@ -127,6 +149,23 @@ func UpdateNode(c *gin.Context) {
 	}
 	if req.Insecure != nil {
 		updates["insecure"] = *req.Insecure
+	}
+
+	updates["vless_port"] = req.VlessPort
+	updates["reality_pubkey"] = req.RealityPubkey
+	updates["reality_short_id"] = req.RealityShortID // DB column is reality_short_id
+	updates["reality_sni"] = req.RealitySNI
+	updates["vless_stats_api"] = req.VlessStatsAPI
+	updates["trojan_port"] = req.TrojanPort
+	updates["trojan_sni"] = req.TrojanSNI
+	if req.VlessEnabled != nil {
+		updates["vless_enabled"] = *req.VlessEnabled
+	}
+	if req.TrojanEnabled != nil {
+		updates["trojan_enabled"] = *req.TrojanEnabled
+	}
+	if req.VlessStatsSecret != "" { // write-only: blank leaves existing unchanged
+		updates["vless_stats_secret"] = req.VlessStatsSecret
 	}
 
 	database.DB.Model(&node).Updates(updates)
