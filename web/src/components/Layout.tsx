@@ -34,68 +34,54 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen flex" style={{ background: "#08090d" }}>
+    <div className="min-h-screen flex bg-paper">
       {/* Sidebar */}
       <aside
-        className="w-[240px] flex flex-col relative shrink-0"
-        style={{ background: "#0c0d12", borderRight: "1px solid rgba(20,20,19,0.08)" }}
+        className="w-[240px] flex flex-col relative shrink-0 bg-paper-rail"
+        style={{ borderRight: "1px solid var(--color-border)" }}
       >
         {/* Logo */}
-        <div className="px-5 py-6" style={{ borderBottom: "1px solid rgba(20,20,19,0.08)" }}>
+        <div className="px-5 py-6" style={{ borderBottom: "1px solid var(--color-border)" }}>
           <div className="flex items-center gap-3">
-            <div
-              className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #C96442 0%, #B5573A 100%)" }}
-            >
-              <Zap size={16} className="text-ink" />
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-clay">
+              <Zap size={16} className="text-white" />
             </div>
             <div>
-              <h1 className="text-[15px] font-bold tracking-wide text-ink" style={{ fontFamily: "'Alumni Sans', sans-serif" }}>
-                HY2BOARD
+              <h1 className="text-[17px] font-semibold tracking-tight text-ink font-serif">
+                hy2board
               </h1>
-              <p className="text-[10px] tracking-[0.15em] text-zinc-500 uppercase">Admin Panel</p>
+              <p className="text-[10px] tracking-[0.15em] text-ink-faint uppercase">Admin Panel</p>
             </div>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1">
-          <p className="px-3 mb-3 text-[10px] font-semibold tracking-[0.2em] text-zinc-600 uppercase">Navigation</p>
+          <p className="px-3 mb-3 text-[10px] font-semibold tracking-[0.2em] text-ink-faint uppercase">Navigation</p>
           {nav.map(({ to, icon: Icon, label, desc }) => {
             const active = location.pathname === to
             return (
               <Link
                 key={to}
                 to={to}
-                className="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative"
-                style={{
-                  background: active ? "rgba(43, 71, 255, 0.1)" : "transparent",
-                  color: active ? "#fff" : "rgba(255,255,255,0.4)",
-                }}
+                className={"group flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200 relative " +
+                  (active ? "bg-clay/10" : "hover:bg-surface-2")}
               >
                 {/* Active indicator */}
                 {active && (
-                  <div
-                    className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
-                    style={{ background: "#C96442" }}
-                  />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-clay" />
                 )}
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 shrink-0"
-                  style={{
-                    background: active ? "rgba(43, 71, 255, 0.15)" : "rgba(20,20,19,0.04)",
-                    color: active ? "#C96442" : undefined,
-                  }}
-                >
+                <div className={"w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 shrink-0 " +
+                  (active ? "bg-clay/15 text-clay" : "bg-surface-2 text-ink-faint")}>
                   <Icon size={15} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={"text-[13px] font-medium " + (active ? "text-ink" : "text-zinc-400 group-hover:text-zinc-200")} style={{ transition: "color 0.2s" }}>
+                  <p className={"text-[13px] font-medium " + (active ? "text-clay" : "text-ink-muted group-hover:text-ink")}>
                     {label}
                   </p>
-                  <p className="text-[10px] text-zinc-600 truncate">{desc}</p>
+                  <p className="text-[10px] text-ink-faint truncate">{desc}</p>
                 </div>
-                {active && <ChevronRight size={12} className="text-zinc-600" />}
+                {active && <ChevronRight size={12} className="text-clay" />}
               </Link>
             )
           })}
@@ -108,10 +94,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             href="/status/"
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-2 flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[12px] font-medium text-green-400 transition-colors"
-            style={{ background: "rgba(34,197,94,0.06)", border: "1px solid rgba(34,197,94,0.12)" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(34,197,94,0.12)" }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(34,197,94,0.06)" }}
+            className="mx-2 flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[12px] font-medium text-success transition-colors"
+            style={{ background: "rgba(63,138,77,0.08)", border: "1px solid rgba(63,138,77,0.18)" }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(63,138,77,0.15)" }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(63,138,77,0.08)" }}
           >
             <Activity size={14} />
             Service Status
@@ -119,26 +105,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* System status */}
           <div
-            className="mx-2 px-3 py-3 rounded-lg"
-            style={{ background: "rgba(20,20,19,0.03)", border: "1px solid rgba(20,20,19,0.06)" }}
+            className="mx-2 px-3 py-3 rounded-lg bg-surface"
+            style={{ border: "1px solid var(--color-border)" }}
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-semibold tracking-[0.15em] text-zinc-600 uppercase">System</span>
-              <span className="text-[10px] font-mono text-zinc-600">{time}</span>
+              <span className="text-[10px] font-semibold tracking-[0.15em] text-ink-faint uppercase">System</span>
+              <span className="text-[10px] font-mono text-ink-faint">{time}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: "var(--color-success)" }} />
+                <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: "var(--color-success)" }} />
               </span>
-              <span className="text-[11px] text-green-400/80">All systems operational</span>
+              <span className="text-[11px] text-success">All systems operational</span>
             </div>
           </div>
 
           {/* Logout */}
           <button
             onClick={logout}
-            className="w-full flex items-center gap-3 px-5 py-2.5 rounded-lg text-sm text-zinc-500 hover:text-red-400 hover:bg-red-500/5 transition-all duration-200"
+            className="w-full flex items-center gap-3 px-5 py-2.5 rounded-lg text-sm text-ink-muted hover:text-danger hover:bg-danger/5 transition-all duration-200"
           >
             <LogOut size={15} />
             <span className="text-[13px]">Sign Out</span>
@@ -152,22 +138,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div
           className="sticky top-0 z-30 flex items-center justify-between px-8 py-4"
           style={{
-            background: "rgba(8, 9, 13, 0.8)",
+            background: "rgba(250, 249, 245, 0.8)",
             backdropFilter: "blur(12px)",
-            borderBottom: "1px solid rgba(20,20,19,0.06)",
+            borderBottom: "1px solid var(--color-border)",
           }}
         >
           <div>
-            <h2 className="text-[15px] font-semibold text-ink">
+            <h2 className="text-[16px] font-semibold text-ink font-serif">
               {nav.find((n) => n.to === location.pathname)?.label || "Page"}
             </h2>
-            <p className="text-[11px] text-zinc-500">
+            <p className="text-[11px] text-ink-muted">
               {nav.find((n) => n.to === location.pathname)?.desc || ""}
             </p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-[11px] text-zinc-600 font-mono">{new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}</div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-ink" style={{ background: "linear-gradient(135deg, #C96442, #B5573A)" }}>
+            <div className="text-[11px] text-ink-faint font-mono">{new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}</div>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white bg-clay">
               A
             </div>
           </div>
