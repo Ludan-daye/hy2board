@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+@theme {
+  /* fonts */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-serif: "Newsreader", ui-serif, Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* semantic palette (Claude warm paper) */
+  --color-paper: #FAF9F5;
+  --color-paper-rail: #F0ECE0;
+  --color-surface: #FFFFFF;
+  --color-surface-2: #F4F1EA;
+  --color-border: #E5E0D6;
+  --color-border-strong: #D9D3C6;
+  --color-ink: #141413;
+  --color-ink-muted: #6B6862;
+  --color-ink-faint: #9A968C;
+  --color-clay: #C96442;
+  --color-clay-hover: #B5573A;
+  --color-success: #3F8A4D;
+  --color-warning: #C2843E;
+  --color-danger: #BE3A31;
+  --color-chart-1: #C96442;
+  --color-chart-2: #4C7A87;
+  --color-chart-3: #C2843E;
+  --color-chart-4: #6E8B6A;
+
+  /* zinc remapped to warm-paper scale (dominant-use tuned; see plan §B) */
+  --color-zinc-950: #FAF9F5;
+  --color-zinc-900: #FFFFFF;
+  --color-zinc-800: #E5E0D6;
+  --color-zinc-700: #D9D3C6;
+  --color-zinc-600: #8B8780;
+  --color-zinc-500: #73706A;
+  --color-zinc-400: #5C5950;
+  --color-zinc-300: #3A3833;
+  --color-zinc-200: #E5E0D6;
+  --color-zinc-100: #2A2825;
+}
+
+html, body, #root {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* visible keyboard focus in clay */
+:focus-visible {
+  outline: 2px solid var(--color-clay);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
