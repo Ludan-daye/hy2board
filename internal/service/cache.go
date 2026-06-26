@@ -15,6 +15,7 @@ type NodeSnapshot struct {
 	Port    int
 	Healthy bool
 	Online  int
+	OnlineUsers map[string]int
 	Traffic map[string]TrafficData
 }
 
@@ -247,8 +248,9 @@ func StartTrafficCache(interval time.Duration) {
 				}()
 				go func() {
 					defer inner.Done()
-					if o, err := GetNodeOnline(n); err == nil {
-						snap.Online = o
+					if m, err := GetNodeOnlineMap(n); err == nil {
+						snap.OnlineUsers = m
+						snap.Online = len(m)
 					}
 				}()
 				inner.Wait()
@@ -256,6 +258,8 @@ func StartTrafficCache(interval time.Duration) {
 			}(i, n)
 		}
 		wg.Wait()
+
+		enforceSharing(nodes, results)
 
 		// Aggregate per-user totals across nodes for this snapshot
 		nowByUser := make(map[string]TrafficData)
