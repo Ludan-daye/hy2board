@@ -171,13 +171,13 @@ export default function Nodes() {
     load()
   }
 
-  const inputCls = "px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
+  const inputCls = "px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
 
   const renderImportPanel = () => (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium text-zinc-400">Paste Deploy Output</h3>
-        <button onClick={() => setShowImport(false)} className="text-zinc-500 hover:text-white" title="Close"><X size={14} /></button>
+        <button onClick={() => setShowImport(false)} className="text-zinc-500 hover:text-ink" title="Close"><X size={14} /></button>
       </div>
       <textarea
         value={importText}
@@ -197,8 +197,8 @@ obfs node:
       {importPreview.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
           {importPreview.map((n) => (
-            <div key={n.name} className="bg-black border border-zinc-800 rounded-lg p-3 text-xs">
-              <div className="font-semibold text-white mb-1">{n.name}</div>
+            <div key={n.name} className="bg-surface border border-zinc-800 rounded-lg p-3 text-xs">
+              <div className="font-semibold text-ink mb-1">{n.name}</div>
               <div className="text-zinc-400 font-mono">{n.host}:{n.port}</div>
               <div className="text-zinc-500 mt-1">{n.obfs_type ? `obfs: ${n.obfs_type}` : "plain"}</div>
               <div className="text-zinc-500 truncate">{n.traffic_api}</div>
@@ -210,11 +210,11 @@ obfs node:
         <button
           disabled={importing || importPreview.length === 0}
           onClick={() => importNodesFromText(importText).catch((e) => showErr((e as Error).message))}
-          className="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 disabled:opacity-50"
+          className="px-4 py-2 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover disabled:opacity-50"
         >
           {importing ? "Importing..." : `Import ${importPreview.length || ""} Nodes`}
         </button>
-        <button onClick={() => { setShowImport(false); setImportText(""); setImportPreview([]) }} className="px-4 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+        <button onClick={() => { setShowImport(false); setImportText(""); setImportPreview([]) }} className="px-4 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
       </div>
     </div>
   )
@@ -246,7 +246,7 @@ obfs node:
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-medium text-zinc-400">{isEdit ? "Edit Node" : "New Node"}</h3>
-        <button onClick={isEdit ? cancelEdit : () => setShowAdd(false)} className="text-zinc-500 hover:text-white"><X size={14} /></button>
+        <button onClick={isEdit ? cancelEdit : () => setShowAdd(false)} className="text-zinc-500 hover:text-ink"><X size={14} /></button>
       </div>
 
       <div className="grid grid-cols-3 gap-3 mb-3">
@@ -276,7 +276,7 @@ obfs node:
         <div className="flex items-end gap-3">
           <label className="flex items-center gap-2 text-sm text-zinc-400 cursor-pointer pb-2">
             <input type="checkbox" checked={form.insecure} onChange={e => setForm({...form, insecure: e.target.checked})}
-              className="w-4 h-4 rounded border-zinc-600 bg-black" />
+              className="w-4 h-4 rounded border-zinc-600 bg-surface" />
             Skip Cert Verify
           </label>
         </div>
@@ -325,12 +325,12 @@ obfs node:
               placeholder="粘贴 vless-pilot-setup / trojan-add 打印的 REGISTER 段..."
               className={inputCls + " w-full font-mono text-xs"} />
             <button type="button" onClick={applyRegister}
-              className="mt-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">填入</button>
+              className="mt-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover">填入</button>
           </div>
         )}
         <label className="flex items-center gap-2 text-sm text-zinc-300 mb-2">
           <input type="checkbox" checked={form.vless_enabled}
-            onChange={e => setForm({...form, vless_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-black" />
+            onChange={e => setForm({...form, vless_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-surface" />
           启用 VLESS-Reality
         </label>
         {form.vless_enabled && (
@@ -351,7 +351,7 @@ obfs node:
         )}
         <label className="flex items-center gap-2 text-sm text-zinc-300 mb-2">
           <input type="checkbox" checked={form.trojan_enabled}
-            onChange={e => setForm({...form, trojan_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-black" />
+            onChange={e => setForm({...form, trojan_enabled: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-surface" />
           启用 Trojan
         </label>
         {form.trojan_enabled && (
@@ -365,10 +365,10 @@ obfs node:
       </div>
 
       <div className="flex gap-2">
-        <button onClick={isEdit ? save : add} className="px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">
+        <button onClick={isEdit ? save : add} className="px-4 py-2 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover">
           {isEdit ? "Save Changes" : "Create Node"}
         </button>
-        <button onClick={isEdit ? cancelEdit : () => setShowAdd(false)} className="px-4 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+        <button onClick={isEdit ? cancelEdit : () => setShowAdd(false)} className="px-4 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
       </div>
     </div>
   )
@@ -383,7 +383,7 @@ obfs node:
             <ClipboardPaste size={14} /> Paste Deploy Output
           </button>
           <button onClick={() => { setShowAdd(!showAdd); setEditId(null); setShowImport(false); setForm({...emptyForm}) }}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">
+            className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover">
             <Plus size={14} /> Add Node
           </button>
         </div>
@@ -401,7 +401,7 @@ obfs node:
           <div className="flex items-center justify-between text-zinc-500 text-xs mb-2">
             <span>监控节点</span><Activity size={14} />
           </div>
-          <div className="text-2xl font-semibold text-white">{summary.total}</div>
+          <div className="text-2xl font-semibold text-ink">{summary.total}</div>
         </div>
         <div className="bg-zinc-900 border border-blue-500/20 rounded-lg p-3">
           <div className="flex items-center justify-between text-blue-300 text-xs mb-2">
@@ -507,7 +507,7 @@ obfs node:
                 </td>
                 <td className="p-4">
                   <div className="flex items-center justify-end gap-1">
-                    <button onClick={() => startEdit(n)} title="Edit" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-white">
+                    <button onClick={() => startEdit(n)} title="Edit" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-ink">
                       <Edit2 size={14} />
                     </button>
                     <button onClick={() => del(n.ID)} title="Delete" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-red-400">

@@ -100,10 +100,10 @@ export default function Finance() {
           <Wallet size={18} /> 财务
         </h2>
         <div className="flex items-center gap-2">
-          <button onClick={() => setShowNewCost(true)} className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 text-white border border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-700">
+          <button onClick={() => setShowNewCost(true)} className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 text-ink border border-zinc-700 rounded-lg text-sm font-medium hover:bg-zinc-700">
             <Plus size={14} /> 成本
           </button>
-          <button onClick={exportCSV} className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">
+          <button onClick={exportCSV} className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover">
             <Download size={14} /> Export CSV
           </button>
         </div>
@@ -146,10 +146,10 @@ export default function Finance() {
       </div>
 
       <div className="flex gap-2 mb-3">
-        <input type="date" value={from} onChange={e => setFrom(e.target.value)} className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white" />
+        <input type="date" value={from} onChange={e => setFrom(e.target.value)} className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink" />
         <span className="self-center text-zinc-500">至</span>
-        <input type="date" value={to} onChange={e => setTo(e.target.value)} className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white" />
-        <button onClick={() => { setFrom(""); setTo("") }} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">清除</button>
+        <input type="date" value={to} onChange={e => setTo(e.target.value)} className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink" />
+        <button onClick={() => { setFrom(""); setTo("") }} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">清除</button>
       </div>
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
@@ -176,7 +176,7 @@ export default function Finance() {
                 <td className="p-3 text-xs">{r.kind === "new" ? "新购" : "续费"}</td>
                 <td className="p-3 text-xs text-zinc-400">{r.note || "-"}</td>
                 <td className="p-3 text-right">
-                  <button onClick={() => setEditing(r)} className="p-1 text-zinc-400 hover:text-white"><Edit2 size={14} /></button>
+                  <button onClick={() => setEditing(r)} className="p-1 text-zinc-400 hover:text-ink"><Edit2 size={14} /></button>
                   <button onClick={() => del(r.ID)} className="p-1 text-zinc-400 hover:text-red-400 ml-1"><Trash2 size={14} /></button>
                 </td>
               </tr>
@@ -224,7 +224,7 @@ export default function Finance() {
                 <td className="p-3 text-right font-mono text-red-300">{yuan(cost.amount_cents)}</td>
                 <td className="p-3 text-xs text-zinc-400">{cost.note || "-"}</td>
                 <td className="p-3 text-right">
-                  <button onClick={() => setEditingCost(cost)} className="p-1 text-zinc-400 hover:text-white"><Edit2 size={14} /></button>
+                  <button onClick={() => setEditingCost(cost)} className="p-1 text-zinc-400 hover:text-ink"><Edit2 size={14} /></button>
                   <button onClick={() => delCost(cost.ID)} className="p-1 text-zinc-400 hover:text-red-400 ml-1"><Trash2 size={14} /></button>
                 </td>
               </tr>
@@ -268,18 +268,18 @@ function EditPaymentModal({ row, onClose, onSaved }: { row: Row; onClose: () => 
     } finally { setBusy(false) }
   }
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50">
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-[400px]">
         <h3 className="text-lg font-semibold mb-4">编辑缴费 #{row.ID}</h3>
         <div className="space-y-3 text-sm">
-          <label className="block"><span className="text-zinc-400">金额 (¥)</span><input type="number" step="0.01" value={amountYuan} onChange={e => setAmountYuan(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
-          <label className="block"><span className="text-zinc-400">备注</span><input value={note} onChange={e => setNote(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
-          <label className="block"><span className="text-zinc-400">缴费日期</span><input type="date" value={paidAt} onChange={e => setPaidAt(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
+          <label className="block"><span className="text-zinc-400">金额 (¥)</span><input type="number" step="0.01" value={amountYuan} onChange={e => setAmountYuan(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
+          <label className="block"><span className="text-zinc-400">备注</span><input value={note} onChange={e => setNote(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
+          <label className="block"><span className="text-zinc-400">缴费日期</span><input type="date" value={paidAt} onChange={e => setPaidAt(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
           <div className="flex gap-3"><label className="flex items-center gap-1"><input type="radio" checked={kind === "renew"} onChange={() => setKind("renew")} /> 续费</label><label className="flex items-center gap-1"><input type="radio" checked={kind === "new"} onChange={() => setKind("new")} /> 新购</label></div>
         </div>
         <div className="flex justify-end gap-2 mt-4">
           <button onClick={onClose} className="px-3 py-2 text-sm text-zinc-400">Cancel</button>
-          <button onClick={save} disabled={busy} className="px-3 py-2 bg-white text-black rounded text-sm font-medium">Save</button>
+          <button onClick={save} disabled={busy} className="px-3 py-2 bg-clay text-white rounded text-sm font-medium">Save</button>
         </div>
       </div>
     </div>
@@ -310,19 +310,19 @@ function EditCostModal({ row, onClose, onSaved }: { row?: CostRow; onClose: () =
     } finally { setBusy(false) }
   }
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50">
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-[420px]">
         <h3 className="text-lg font-semibold mb-4">{row ? `编辑成本 #${row.ID}` : "新增成本"}</h3>
         <div className="space-y-3 text-sm">
-          <label className="block"><span className="text-zinc-400">名称</span><input value={name} onChange={e => setName(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" autoFocus /></label>
-          <label className="block"><span className="text-zinc-400">金额 (¥)</span><input type="number" step="0.01" value={amountYuan} onChange={e => setAmountYuan(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
-          <label className="block"><span className="text-zinc-400">分类</span><input value={category} onChange={e => setCategory(e.target.value)} placeholder="服务器 / IP / 机场 / 其他" className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
-          <label className="block"><span className="text-zinc-400">发生日期</span><input type="date" value={incurredAt} onChange={e => setIncurredAt(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
-          <label className="block"><span className="text-zinc-400">备注</span><input value={note} onChange={e => setNote(e.target.value)} className="w-full mt-1 px-3 py-2 bg-black border border-zinc-700 rounded text-white" /></label>
+          <label className="block"><span className="text-zinc-400">名称</span><input value={name} onChange={e => setName(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" autoFocus /></label>
+          <label className="block"><span className="text-zinc-400">金额 (¥)</span><input type="number" step="0.01" value={amountYuan} onChange={e => setAmountYuan(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
+          <label className="block"><span className="text-zinc-400">分类</span><input value={category} onChange={e => setCategory(e.target.value)} placeholder="服务器 / IP / 机场 / 其他" className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
+          <label className="block"><span className="text-zinc-400">发生日期</span><input type="date" value={incurredAt} onChange={e => setIncurredAt(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
+          <label className="block"><span className="text-zinc-400">备注</span><input value={note} onChange={e => setNote(e.target.value)} className="w-full mt-1 px-3 py-2 bg-surface border border-zinc-700 rounded text-ink" /></label>
         </div>
         <div className="flex justify-end gap-2 mt-4">
           <button onClick={onClose} className="px-3 py-2 text-sm text-zinc-400">Cancel</button>
-          <button onClick={save} disabled={busy || !name.trim()} className="px-3 py-2 bg-white text-black rounded text-sm font-medium disabled:opacity-50">Save</button>
+          <button onClick={save} disabled={busy || !name.trim()} className="px-3 py-2 bg-clay text-white rounded text-sm font-medium disabled:opacity-50">Save</button>
         </div>
       </div>
     </div>

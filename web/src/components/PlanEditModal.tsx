@@ -154,20 +154,20 @@ export default function PlanEditModal({
   }
 
   const inputCls =
-    "w-full px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
+    "w-full px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
 
   const tabBtnCls = (t: Tab) =>
-    `px-3 py-1.5 text-xs ${tab === t ? "bg-zinc-800 text-white" : "text-zinc-400 hover:text-white"} rounded`
+    `px-3 py-1.5 text-xs ${tab === t ? "bg-zinc-800 text-ink" : "text-zinc-400 hover:text-ink"} rounded`
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45" onClick={onClose}>
       <div
         onClick={(e) => e.stopPropagation()}
         className="bg-zinc-900 border border-zinc-800 rounded-xl w-[520px] p-5 space-y-3"
       >
         {/* Header */}
         <div className="flex items-center justify-between">
-          <h3 className="text-white font-semibold">{plan?.ID ? "Edit Plan" : "New Plan"}</h3>
+          <h3 className="text-ink font-semibold">{plan?.ID ? "Edit Plan" : "New Plan"}</h3>
           <button onClick={onClose}>
             <X size={16} className="text-zinc-500" />
           </button>
@@ -243,7 +243,7 @@ export default function PlanEditModal({
               onChange={(e) => setForm((f) => ({ ...f, node_ids: e.target.value }))}
               className={inputCls}
             />
-            <label className="flex items-center gap-2 text-sm text-white">
+            <label className="flex items-center gap-2 text-sm text-ink">
               <input
                 type="checkbox"
                 checked={form.auto_reset}
@@ -265,7 +265,7 @@ export default function PlanEditModal({
                 ["rule_ad_block", "Ad Block"],
               ] as [keyof FormState, string][]
             ).map(([k, label]) => (
-              <label key={k} className="flex items-center gap-2 text-sm text-white">
+              <label key={k} className="flex items-center gap-2 text-sm text-ink">
                 <input
                   type="checkbox"
                   checked={form[k] as boolean}
@@ -305,7 +305,7 @@ export default function PlanEditModal({
                     setQuickImportPw(parts.slice(3).join(":"))
                   }
                 }}
-                className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-xs font-mono text-white"
+                className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-xs font-mono text-ink"
               />
               <p className="text-[10px] text-zinc-500">
                 粘贴一行 <code className="text-zinc-400">host:port:user:password</code>，自动填到下面 4 个字段。
@@ -318,7 +318,7 @@ export default function PlanEditModal({
                 <select
                   value={form.proxy_type || ""}
                   onChange={(e) => setForm((f) => ({ ...f, proxy_type: e.target.value }))}
-                  className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+                  className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
                 >
                   <option value="">(none — shared)</option>
                   <option value="socks5">socks5</option>
@@ -331,7 +331,7 @@ export default function PlanEditModal({
                   type="number"
                   value={form.proxy_port || ""}
                   onChange={(e) => setForm((f) => ({ ...f, proxy_port: +e.target.value }))}
-                  className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+                  className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
                 />
               </div>
             </div>
@@ -341,7 +341,7 @@ export default function PlanEditModal({
                 value={form.proxy_host || ""}
                 onChange={(e) => setForm((f) => ({ ...f, proxy_host: e.target.value }))}
                 placeholder="1.2.3.4"
-                className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white font-mono"
+                className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink font-mono"
               />
             </div>
             <div>
@@ -349,7 +349,7 @@ export default function PlanEditModal({
               <input
                 value={form.proxy_username || ""}
                 onChange={(e) => setForm((f) => ({ ...f, proxy_username: e.target.value }))}
-                className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white font-mono"
+                className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink font-mono"
               />
             </div>
             {!plan?.ID && (
@@ -359,7 +359,7 @@ export default function PlanEditModal({
                   type="password"
                   value={form.proxy_password || ""}
                   onChange={(e) => setForm((f) => ({ ...f, proxy_password: e.target.value }))}
-                  className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+                  className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
                 />
               </div>
             )}
@@ -375,7 +375,7 @@ export default function PlanEditModal({
                   <button
                     type="button"
                     onClick={() => setShowPwModal(true)}
-                    className="px-3 py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded text-white"
+                    className="px-3 py-2 text-xs bg-zinc-800 hover:bg-zinc-700 rounded text-ink"
                   >
                     {plan?.proxy_host ? "Change" : "Set"}
                   </button>
@@ -388,7 +388,7 @@ export default function PlanEditModal({
                 rows={2}
                 value={form.proxy_note || ""}
                 onChange={(e) => setForm((f) => ({ ...f, proxy_note: e.target.value }))}
-                className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+                className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
                 placeholder="e.g. 东京家宽 / 月付 100 USD / 续期日 2026-05-01"
               />
               <p className="text-[10px] text-amber-400/80 mt-1">
@@ -407,7 +407,7 @@ export default function PlanEditModal({
           </button>
           <button
             onClick={save}
-            className="px-4 py-2 text-sm bg-white text-black rounded font-medium"
+            className="px-4 py-2 text-sm bg-clay text-white rounded font-medium"
           >
             Save
           </button>
@@ -417,23 +417,23 @@ export default function PlanEditModal({
       {/* Change password sub-modal */}
       {showPwModal && plan?.ID && (
         <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
+          className="fixed inset-0 bg-ink/45 flex items-center justify-center z-50"
           onClick={() => setShowPwModal(false)}
         >
           <div className="bg-zinc-900 rounded-lg p-6 w-96" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-sm font-semibold text-white mb-3">Change proxy password</h3>
+            <h3 className="text-sm font-semibold text-ink mb-3">Change proxy password</h3>
             <input
               type="password"
               value={pwInput}
               onChange={(e) => setPwInput(e.target.value)}
               placeholder="new password"
-              className="w-full px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white mb-4"
+              className="w-full px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink mb-4"
               autoFocus
             />
             <div className="flex justify-end gap-2">
               <button
                 onClick={() => { setShowPwModal(false); setPwInput("") }}
-                className="px-3 py-1.5 text-xs text-zinc-400 hover:text-white"
+                className="px-3 py-1.5 text-xs text-zinc-400 hover:text-ink"
               >
                 Cancel
               </button>
@@ -445,7 +445,7 @@ export default function PlanEditModal({
                   setPwInput("")
                   alert("Password updated.")
                 }}
-                className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-500 text-white rounded"
+                className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-500 text-ink rounded"
               >
                 Save
               </button>

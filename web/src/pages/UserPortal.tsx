@@ -54,7 +54,7 @@ export default function UserPortal() {
   const logout = () => { localStorage.removeItem("token"); localStorage.removeItem("role"); window.location.href = "/login" }
   const copyText = (text: string, label: string) => { copyToClipboard(text); setCopied(label); setTimeout(() => setCopied(""), 2000) }
 
-  if (!info) return <div className="min-h-screen bg-black flex items-center justify-center text-zinc-500">Loading...</div>
+  if (!info) return <div className="min-h-screen bg-surface flex items-center justify-center text-zinc-500">Loading...</div>
 
   const subBase = window.location.origin + "/api/sub/" + info.sub_token
   const trafficTotal = info.traffic_tx + info.traffic_rx
@@ -66,7 +66,7 @@ export default function UserPortal() {
 
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-surface text-ink">
       <div className="max-w-3xl mx-auto p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -94,7 +94,7 @@ export default function UserPortal() {
               Service Status
             </a>
             <span className="flex items-center gap-1.5 text-xs text-zinc-500"><span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />Live</span>
-            <button onClick={logout} className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white"><LogOut size={14} /></button>
+            <button onClick={logout} className="flex items-center gap-2 text-sm text-zinc-400 hover:text-ink"><LogOut size={14} /></button>
           </div>
         </div>
 
@@ -144,7 +144,7 @@ export default function UserPortal() {
                       <Cell fill="#3b82f6" />
                       <Cell fill="#10b981" />
                     </Pie>
-                    <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8, fontSize: 12 }} formatter={(v) => formatBytes(Number(v))} />
+                    <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 12 }} formatter={(v) => formatBytes(Number(v))} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="space-y-2">
@@ -169,10 +169,10 @@ export default function UserPortal() {
                   <linearGradient id="utxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} /><stop offset="95%" stopColor="#3b82f6" stopOpacity={0} /></linearGradient>
                   <linearGradient id="urxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.3} /><stop offset="95%" stopColor="#10b981" stopOpacity={0} /></linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
-                <XAxis dataKey="time" tick={{ fontSize: 9, fill: "#71717a" }} />
-                <YAxis tick={{ fontSize: 9, fill: "#71717a" }} tickFormatter={(v) => formatBytes(v)} width={55} />
-                <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D6" />
+                <XAxis dataKey="time" tick={{ fontSize: 9, fill: "#6B6862" }} />
+                <YAxis tick={{ fontSize: 9, fill: "#6B6862" }} tickFormatter={(v) => formatBytes(v)} width={55} />
+                <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
                 <Area type="monotone" dataKey="tx" stroke="#3b82f6" fill="url(#utxG)" name="Upload" strokeWidth={2} />
                 <Area type="monotone" dataKey="rx" stroke="#10b981" fill="url(#urxG)" name="Download" strokeWidth={2} />
               </AreaChart>
@@ -186,10 +186,10 @@ export default function UserPortal() {
             <h3 className="text-sm font-medium text-zinc-400 mb-3">Traffic by Node</h3>
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={nodeBarData} barGap={2}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D6" />
                 <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
-                <YAxis tick={{ fontSize: 9, fill: "#71717a" }} tickFormatter={(v) => formatBytes(v)} width={55} />
-                <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #27272a", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
+                <YAxis tick={{ fontSize: 9, fill: "#6B6862" }} tickFormatter={(v) => formatBytes(v)} width={55} />
+                <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
                 <Bar dataKey="upload" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Upload" />
                 <Bar dataKey="download" fill="#10b981" radius={[4, 4, 0, 0]} name="Download" />
               </BarChart>
@@ -208,7 +208,7 @@ export default function UserPortal() {
               { label: "Shadowrocket full config", url: subBase + "?format=shadowrocket-conf" },
               { label: "V2Ray / V2RayN / NekoBox", url: subBase + "?format=v2ray" },
             ].map(({ label, url }) => (
-              <div key={label} className="flex items-center justify-between bg-black rounded-lg p-3 border border-zinc-800">
+              <div key={label} className="flex items-center justify-between bg-surface rounded-lg p-3 border border-zinc-800">
                 <div className="min-w-0 flex-1 mr-3">
                   <p className="text-sm font-medium">{label}</p>
                   <p className="text-xs text-zinc-500 truncate">{url}</p>
@@ -239,7 +239,7 @@ export default function UserPortal() {
             <h3 className="text-sm font-medium text-zinc-400 mb-3">Connected Nodes</h3>
             <div className="space-y-2">
               {info.nodes.map((n, i) => (
-                <div key={i} className="flex items-center justify-between bg-black rounded-lg p-3 border border-zinc-800">
+                <div key={i} className="flex items-center justify-between bg-surface rounded-lg p-3 border border-zinc-800">
                   <div className="flex items-center gap-2">
                     <Server size={14} className="text-zinc-500" />
                     <span className="text-sm font-medium">{n.node}</span>
@@ -247,7 +247,7 @@ export default function UserPortal() {
                   <div className="flex gap-4 text-xs text-zinc-400">
                     <span className="flex items-center gap-1"><ArrowUp size={10} className="text-blue-400" />{formatBytes(n.tx)}</span>
                     <span className="flex items-center gap-1"><ArrowDown size={10} className="text-green-400" />{formatBytes(n.rx)}</span>
-                    <span className="font-medium text-white">{formatBytes(n.tx + n.rx)}</span>
+                    <span className="font-medium text-ink">{formatBytes(n.tx + n.rx)}</span>
                   </div>
                 </div>
               ))}

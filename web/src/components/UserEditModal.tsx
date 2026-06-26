@@ -95,14 +95,14 @@ export default function UserEditModal({ user, onClose, onSaved }: {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/45" onClick={onClose}>
       <div
         className="bg-zinc-900 border border-zinc-800 rounded-xl w-[600px] max-w-[90vw] max-h-[85vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between p-4 border-b border-zinc-800">
-          <h3 className="text-sm font-semibold text-white">Edit User: {user.username}</h3>
-          <button onClick={onClose} className="text-zinc-500 hover:text-white">
+          <h3 className="text-sm font-semibold text-ink">Edit User: {user.username}</h3>
+          <button onClick={onClose} className="text-zinc-500 hover:text-ink">
             <X size={16} />
           </button>
         </div>
@@ -114,7 +114,7 @@ export default function UserEditModal({ user, onClose, onSaved }: {
           <select
             value={selectedPlan}
             onChange={(e) => setSelectedPlan(e.target.value === "" ? "" : +e.target.value)}
-            className="px-3 py-1.5 bg-black border border-zinc-700 rounded text-sm text-white"
+            className="px-3 py-1.5 bg-surface border border-zinc-700 rounded text-sm text-ink"
           >
             <option value="">Select plan</option>
             {plans.map((p) => (
@@ -126,7 +126,7 @@ export default function UserEditModal({ user, onClose, onSaved }: {
           <button
             onClick={applyPlan}
             disabled={!selectedPlan}
-            className="px-3 py-1.5 text-xs bg-white text-black rounded font-medium hover:bg-zinc-200 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="px-3 py-1.5 text-xs bg-clay text-white rounded font-medium hover:bg-clay-hover disabled:opacity-40 disabled:cursor-not-allowed"
           >
             Apply
           </button>
@@ -140,7 +140,7 @@ export default function UserEditModal({ user, onClose, onSaved }: {
               className={
                 "px-4 py-2 text-xs uppercase tracking-wider " +
                 (tab === t
-                  ? "text-white border-b-2 border-blue-400"
+                  ? "text-ink border-b-2 border-blue-400"
                   : "text-zinc-500 hover:text-zinc-300")
               }
             >
@@ -162,13 +162,13 @@ export default function UserEditModal({ user, onClose, onSaved }: {
 
         {tab === "basic" && (
           <div className="flex justify-end gap-2 p-4 border-t border-zinc-800">
-            <button onClick={onClose} className="px-4 py-2 text-sm text-zinc-400 hover:text-white">
+            <button onClick={onClose} className="px-4 py-2 text-sm text-zinc-400 hover:text-ink">
               Cancel
             </button>
             <button
               onClick={save}
               disabled={saving}
-              className="px-4 py-2 text-sm bg-white text-black rounded font-medium hover:bg-zinc-200 disabled:opacity-50"
+              className="px-4 py-2 text-sm bg-clay text-white rounded font-medium hover:bg-clay-hover disabled:opacity-50"
             >
               {saving ? "Saving..." : "Save"}
             </button>
@@ -216,12 +216,12 @@ function BasicTab({
   onSaved: () => void
 }) {
   const inputCls =
-    "w-full px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
+    "w-full px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
   return (
     <div className="space-y-4">
       <div>
         <label className="text-xs text-zinc-500 uppercase tracking-wider">Username</label>
-        <p className="text-sm text-white font-mono mt-1">{username}</p>
+        <p className="text-sm text-ink font-mono mt-1">{username}</p>
       </div>
       <div>
         <label className="text-xs text-zinc-500 uppercase tracking-wider">Email</label>
@@ -356,7 +356,7 @@ function SubscriptionTab({ user, onSaved }: { user: EditableUser; onSaved: () =>
   }
 
   const inputCls =
-    "flex-1 px-3 py-2 bg-black border border-zinc-700 rounded-lg text-xs text-white font-mono focus:outline-none focus:border-zinc-500"
+    "flex-1 px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-xs text-ink font-mono focus:outline-none focus:border-zinc-500"
 
   return (
     <div className="space-y-4">
@@ -374,7 +374,7 @@ function SubscriptionTab({ user, onSaved }: { user: EditableUser; onSaved: () =>
           <button
             onClick={() => save("hy2_password", hy2)}
             disabled={saving}
-            className="px-3 py-2 text-xs bg-white text-black rounded font-medium hover:bg-zinc-200 disabled:opacity-50"
+            className="px-3 py-2 text-xs bg-clay text-white rounded font-medium hover:bg-clay-hover disabled:opacity-50"
           >
             Apply
           </button>
@@ -396,7 +396,7 @@ function SubscriptionTab({ user, onSaved }: { user: EditableUser; onSaved: () =>
           <button
             onClick={() => save("sub_token", tok)}
             disabled={saving}
-            className="px-3 py-2 text-xs bg-white text-black rounded font-medium hover:bg-zinc-200 disabled:opacity-50"
+            className="px-3 py-2 text-xs bg-clay text-white rounded font-medium hover:bg-clay-hover disabled:opacity-50"
           >
             Apply
           </button>
@@ -412,13 +412,13 @@ function SubscriptionTab({ user, onSaved }: { user: EditableUser; onSaved: () =>
         <label className="text-xs text-zinc-500 uppercase tracking-wider">Subscription URLs</label>
         <div className="grid grid-cols-2 gap-2 mt-2">
           {formats.map((f) => (
-            <div key={f.label} className="bg-black border border-zinc-800 rounded-lg p-3">
+            <div key={f.label} className="bg-surface border border-zinc-800 rounded-lg p-3">
               <p className="text-xs text-zinc-400 font-semibold mb-2">{f.label}</p>
               <p className="text-[10px] text-zinc-600 font-mono truncate mb-2">{f.url}</p>
               <div className="flex items-center">
                 <button
                   onClick={() => doCopy(f.url, f.label)}
-                  className="flex items-center gap-1 text-xs text-zinc-300 hover:text-white"
+                  className="flex items-center gap-1 text-xs text-zinc-300 hover:text-ink"
                 >
                   {copied === f.label ? (
                     <>
@@ -432,7 +432,7 @@ function SubscriptionTab({ user, onSaved }: { user: EditableUser; onSaved: () =>
                 </button>
                 <button
                   onClick={() => setQrFormat(f.label.toLowerCase())}
-                  className="flex items-center gap-1 text-xs text-zinc-300 hover:text-white ml-2"
+                  className="flex items-center gap-1 text-xs text-zinc-300 hover:text-ink ml-2"
                   title="Show QR code"
                 >
                   <QrCode size={11} /> QR
@@ -499,7 +499,7 @@ function AccessTab({
   }
 
   const inputCls =
-    "w-full px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
+    "w-full px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
 
   return (
     <div className="space-y-4">
@@ -519,7 +519,7 @@ function AccessTab({
         <label className="text-xs text-zinc-500 uppercase tracking-wider">
           Traffic Used (readonly)
         </label>
-        <p className="text-sm text-white font-mono mt-1">
+        <p className="text-sm text-ink font-mono mt-1">
           {(user.traffic_used / 1024 / 1024 / 1024).toFixed(2)} GB
         </p>
       </div>
@@ -530,7 +530,7 @@ function AccessTab({
           checked={form.auto_reset}
           onChange={(e) => setForm({ ...form, auto_reset: e.target.checked })}
         />
-        <label htmlFor="auto_reset" className="text-sm text-white">
+        <label htmlFor="auto_reset" className="text-sm text-ink">
           Auto-reset traffic every 30 days
         </label>
       </div>
@@ -564,7 +564,7 @@ function AccessTab({
           checked={form.enabled}
           onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
         />
-        <label htmlFor="enabled" className="text-sm text-white">
+        <label htmlFor="enabled" className="text-sm text-ink">
           Enabled
         </label>
       </div>
@@ -576,7 +576,7 @@ function AccessTab({
             checked={form.restrict}
             onChange={(e) => setForm({ ...form, restrict: e.target.checked })}
           />
-          <label htmlFor="restrict" className="text-sm text-white">
+          <label htmlFor="restrict" className="text-sm text-ink">
             Restrict to specific nodes (otherwise all healthy nodes)
           </label>
         </div>
@@ -594,7 +594,7 @@ function AccessTab({
                     setForm({ ...form, allowedNodeIds: [...set] })
                   }}
                 />
-                <span className={n.healthy ? "text-white" : "text-zinc-600"}>
+                <span className={n.healthy ? "text-ink" : "text-zinc-600"}>
                   {n.name}
                   {!n.healthy && " (offline)"}
                 </span>
@@ -606,7 +606,7 @@ function AccessTab({
       {err && <p className="text-xs text-red-400">{err}</p>}
       <button
         onClick={save}
-        className="px-4 py-2 text-sm bg-white text-black rounded font-medium hover:bg-zinc-200"
+        className="px-4 py-2 text-sm bg-clay text-white rounded font-medium hover:bg-clay-hover"
       >
         Save Access Settings
       </button>
@@ -651,7 +651,7 @@ function RulesTab({
         className="mt-1"
       />
       <div>
-        <p className="text-sm text-white">{label}</p>
+        <p className="text-sm text-ink">{label}</p>
         <p className="text-xs text-zinc-500">{desc}</p>
       </div>
     </label>
@@ -666,7 +666,7 @@ function RulesTab({
       {err && <p className="text-xs text-red-400">{err}</p>}
       <button
         onClick={save}
-        className="mt-4 px-4 py-2 text-sm bg-white text-black rounded font-medium hover:bg-zinc-200"
+        className="mt-4 px-4 py-2 text-sm bg-clay text-white rounded font-medium hover:bg-clay-hover"
       >
         Save Rules
       </button>
@@ -698,9 +698,9 @@ function QRModal({ userId, format, onClose }: {
   }, [userId, format])
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90" onClick={onClose}>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/55" onClick={onClose}>
       <div
-        className="bg-white p-4 rounded flex flex-col items-center"
+        className="bg-surface p-4 rounded flex flex-col items-center"
         onClick={(e) => e.stopPropagation()}
       >
         {err ? (

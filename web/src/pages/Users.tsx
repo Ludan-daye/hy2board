@@ -228,8 +228,8 @@ export default function Users() {
     load()
   }
 
-  const inputCls = "px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
-  const btnCls = "px-3 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200"
+  const inputCls = "px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
+  const btnCls = "px-3 py-2 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover"
 
   return (
     <div>
@@ -245,7 +245,7 @@ export default function Users() {
               Live · {lastUpdate}
             </span>
           )}
-          <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200">
+          <button onClick={() => setShowAdd(!showAdd)} className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover">
             <Plus size={14} /> Add User
           </button>
         </div>
@@ -263,12 +263,12 @@ export default function Users() {
             <input placeholder="Expires" type="date" value={form.expires_at} onChange={e => setForm({...form, expires_at: e.target.value})} className={inputCls} />
           </div>
           <label className="flex items-center gap-2 mt-3 text-sm text-zinc-400 cursor-pointer">
-            <input type="checkbox" checked={form.chain_proxy} onChange={e => setForm({...form, chain_proxy: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-black" />
+            <input type="checkbox" checked={form.chain_proxy} onChange={e => setForm({...form, chain_proxy: e.target.checked})} className="w-4 h-4 rounded border-zinc-600 bg-surface" />
             Rule: AI 链式代理 (走住宅 IP)
           </label>
           <div className="flex gap-2 mt-3">
             <button onClick={add} className={btnCls}>Create User</button>
-            <button onClick={() => setShowAdd(false)} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+            <button onClick={() => setShowAdd(false)} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
           </div>
         </div>
       )}
@@ -279,7 +279,7 @@ export default function Users() {
           <div className="flex gap-2">
             <input placeholder="New password" type="password" value={pwForm.pw} onChange={e => setPwForm({...pwForm, pw: e.target.value})} className={inputCls + " flex-1"} autoFocus />
             <button onClick={setPassword} className={btnCls}>Save</button>
-            <button onClick={() => setPwForm(null)} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+            <button onClick={() => setPwForm(null)} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
           </div>
         </div>
       )}
@@ -293,7 +293,7 @@ export default function Users() {
           </div>
           <div className="flex gap-2 mt-3">
             <button onClick={saveEdit} className={btnCls}>Save</button>
-            <button onClick={() => setEditForm(null)} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+            <button onClick={() => setEditForm(null)} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
           </div>
         </div>
       )}
@@ -308,12 +308,12 @@ export default function Users() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search users, email, notes, tags..."
-          className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm flex-1 min-w-[200px] text-white placeholder-zinc-500"
+          className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm flex-1 min-w-[200px] text-ink placeholder-zinc-500"
         />
         <select
           value={tagFilter}
           onChange={(e) => setTagFilter(e.target.value)}
-          className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+          className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
         >
           <option value="">All tags</option>
           {allTags.map((t) => (
@@ -325,7 +325,7 @@ export default function Users() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+          className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
         >
           <option value="">All status</option>
           <option value="active">Active</option>
@@ -336,7 +336,7 @@ export default function Users() {
         <select
           value={planFilter}
           onChange={(e) => setPlanFilter(e.target.value)}
-          className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+          className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
         >
           <option value="">All plans</option>
           <option value="none">No plan</option>
@@ -350,28 +350,28 @@ export default function Users() {
 
       {selected.size > 0 && (
         <div className="mb-3 p-3 bg-zinc-800 rounded flex items-center gap-3">
-          <span className="text-sm text-white">{selected.size} selected</span>
+          <span className="text-sm text-ink">{selected.size} selected</span>
           <button
             onClick={() => bulk("enable")}
-            className="px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-500"
+            className="px-3 py-1 text-xs bg-green-600 text-ink rounded hover:bg-green-500"
           >
             Enable
           </button>
           <button
             onClick={() => bulk("disable")}
-            className="px-3 py-1 text-xs bg-amber-600 text-white rounded hover:bg-amber-500"
+            className="px-3 py-1 text-xs bg-amber-600 text-ink rounded hover:bg-amber-500"
           >
             Disable
           </button>
           <button
             onClick={() => bulk("delete")}
-            className="px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-500"
+            className="px-3 py-1 text-xs bg-red-600 text-ink rounded hover:bg-red-500"
           >
             Delete
           </button>
           <button
             onClick={() => setSelected(new Set())}
-            className="px-3 py-1 text-xs text-zinc-300 hover:text-white ml-auto"
+            className="px-3 py-1 text-xs text-zinc-300 hover:text-ink ml-auto"
           >
             Clear
           </button>
@@ -467,18 +467,18 @@ export default function Users() {
                     {u.chain_proxy && <span className="px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400">AI</span>}
 
                     {/* Per-server traffic toggle */}
-                    <button onClick={() => setTrafficExpanded(isTraffic ? null : u.ID)} title="Per-server traffic" className={"p-1.5 rounded hover:bg-zinc-800 " + (isTraffic ? "text-blue-400" : "text-zinc-500 hover:text-white")}>
+                    <button onClick={() => setTrafficExpanded(isTraffic ? null : u.ID)} title="Per-server traffic" className={"p-1.5 rounded hover:bg-zinc-800 " + (isTraffic ? "text-blue-400" : "text-zinc-500 hover:text-ink")}>
                       <Server size={14} />
                     </button>
 
                     {/* Subscription links toggle */}
-                    <button onClick={() => setExpanded(isExp ? null : u.ID)} title="Subscription Links" className={"p-1.5 rounded hover:bg-zinc-800 " + (isExp ? "text-blue-400" : "text-zinc-500 hover:text-white")}>
+                    <button onClick={() => setExpanded(isExp ? null : u.ID)} title="Subscription Links" className={"p-1.5 rounded hover:bg-zinc-800 " + (isExp ? "text-blue-400" : "text-zinc-500 hover:text-ink")}>
                       {isExp ? <ChevronUp size={14} /> : <Link size={14} />}
                     </button>
 
                     {/* Edit (pencil) */}
                     <button onClick={() => setEditingUser(u)} title="Edit user"
-                      className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-white">
+                      className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-ink">
                       <Edit2 size={14} />
                     </button>
 
@@ -494,26 +494,26 @@ export default function Users() {
                       </button>
                       {moreOpen === u.ID && (
                         <div className="more-dropdown absolute right-0 mt-1 z-30 bg-zinc-800 border border-zinc-700 rounded shadow-lg w-44 py-1 text-xs">
-                          <button onClick={() => { toggle(u.ID); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { toggle(u.ID); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             {u.enabled ? "Disable" : "Enable"}
                           </button>
-                          <button onClick={() => { setPwForm({ id: u.ID, pw: "" }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { setPwForm({ id: u.ID, pw: "" }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             Set login password
                           </button>
-                          <button onClick={() => { resetTraffic(u.ID); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { resetTraffic(u.ID); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             Reset traffic
                           </button>
-                          <button onClick={() => { api.post(`/admin/users/${u.ID}/toggle-chain`).then(load); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { api.post(`/admin/users/${u.ID}/toggle-chain`).then(load); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             {u.chain_proxy ? "关闭 Rule: AI" : "开启 Rule: AI"}
                           </button>
                           <div className="border-t border-zinc-700 my-1" />
-                          <button onClick={() => { setPayDialog({ user: u, days: 30 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { setPayDialog({ user: u, days: 30 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             Renew +30d
                           </button>
-                          <button onClick={() => { setPayDialog({ user: u, days: 90 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { setPayDialog({ user: u, days: 90 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             Renew +90d
                           </button>
-                          <button onClick={() => { setPayDialog({ user: u, days: 365 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-white">
+                          <button onClick={() => { setPayDialog({ user: u, days: 365 }); setMoreOpen(null) }} className="block w-full text-left px-3 py-1.5 hover:bg-zinc-700 text-ink">
                             Renew +365d
                           </button>
                           <div className="border-t border-zinc-700 my-1" />
@@ -530,7 +530,7 @@ export default function Users() {
                 {isTraffic && (
                   <div className="mt-3 border-t border-zinc-800 pt-3">
                     <div className="flex items-center justify-between mb-3">
-                      <p className="text-xs text-zinc-500">Per-Server Traffic for <span className="text-white">{u.username}</span></p>
+                      <p className="text-xs text-zinc-500">Per-Server Traffic for <span className="text-ink">{u.username}</span></p>
                       <span className="text-xs text-zinc-600 font-mono">Total: {fmt(nodeTraffic.reduce((s, n) => s + n.total, 0))}</span>
                     </div>
                     {nodeTraffic.length === 0 ? (
@@ -540,14 +540,14 @@ export default function Users() {
                         {nodeTraffic.map((n, i) => {
                           const maxTotal = Math.max(...nodeTraffic.map(x => x.total), 1)
                           return (
-                            <div key={i} className="bg-black/40 rounded-lg p-3 border border-zinc-800 relative overflow-hidden">
+                            <div key={i} className="bg-ink/30 rounded-lg p-3 border border-zinc-800 relative overflow-hidden">
                               <div className="flex items-center justify-between mb-1.5">
                                 <div className="flex items-center gap-2 min-w-0">
                                   <span className={"w-1.5 h-1.5 rounded-full flex-shrink-0 " + (n.healthy ? "bg-green-500" : "bg-red-500")} />
-                                  <span className="text-sm font-medium text-white truncate">{n.name}</span>
+                                  <span className="text-sm font-medium text-ink truncate">{n.name}</span>
                                   {n.total === 0 && <span className="text-[10px] text-zinc-600">idle</span>}
                                 </div>
-                                <span className="text-xs font-semibold text-white font-mono">{fmt(n.total)}</span>
+                                <span className="text-xs font-semibold text-ink font-mono">{fmt(n.total)}</span>
                               </div>
                               <div className="flex items-center gap-4 text-xs text-zinc-500">
                                 <span className="flex items-center gap-1">
@@ -576,7 +576,7 @@ export default function Users() {
                 {/* Subscription links expand panel */}
                 {isExp && (
                   <div className="mt-3 border-t border-zinc-800 pt-3">
-                    <p className="text-xs text-zinc-500 mb-3">Subscription Links for <span className="text-white">{u.username}</span></p>
+                    <p className="text-xs text-zinc-500 mb-3">Subscription Links for <span className="text-ink">{u.username}</span></p>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
                       {[
                         { label: "Universal (URI)", url: subUrl },
@@ -585,7 +585,7 @@ export default function Users() {
                         { label: "Shadowrocket full config", url: subUrl + "?format=shadowrocket-conf" },
                         { label: "V2Ray / V2RayN / NekoBox", url: subUrl + "?format=v2ray" },
                       ].map(({ label, url }) => (
-                        <div key={label} className="flex items-center justify-between bg-black rounded-lg p-2.5 border border-zinc-800">
+                        <div key={label} className="flex items-center justify-between bg-surface rounded-lg p-2.5 border border-zinc-800">
                           <div className="min-w-0 flex-1 mr-3">
                             <p className="text-xs font-medium text-zinc-300">{label}</p>
                             <p className="text-xs text-zinc-600 truncate">{url}</p>

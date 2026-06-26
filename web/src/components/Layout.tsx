@@ -38,19 +38,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside
         className="w-[240px] flex flex-col relative shrink-0"
-        style={{ background: "#0c0d12", borderRight: "1px solid rgba(255,255,255,0.06)" }}
+        style={{ background: "#0c0d12", borderRight: "1px solid rgba(20,20,19,0.08)" }}
       >
         {/* Logo */}
-        <div className="px-5 py-6" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+        <div className="px-5 py-6" style={{ borderBottom: "1px solid rgba(20,20,19,0.08)" }}>
           <div className="flex items-center gap-3">
             <div
               className="w-9 h-9 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #1a2b6b 0%, #243b8f 100%)" }}
+              style={{ background: "linear-gradient(135deg, #C96442 0%, #B5573A 100%)" }}
             >
-              <Zap size={16} className="text-white" />
+              <Zap size={16} className="text-ink" />
             </div>
             <div>
-              <h1 className="text-[15px] font-bold tracking-wide text-white" style={{ fontFamily: "'Alumni Sans', sans-serif" }}>
+              <h1 className="text-[15px] font-bold tracking-wide text-ink" style={{ fontFamily: "'Alumni Sans', sans-serif" }}>
                 HY2BOARD
               </h1>
               <p className="text-[10px] tracking-[0.15em] text-zinc-500 uppercase">Admin Panel</p>
@@ -77,20 +77,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {active && (
                   <div
                     className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
-                    style={{ background: "#1a2b6b" }}
+                    style={{ background: "#C96442" }}
                   />
                 )}
                 <div
                   className="w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200 shrink-0"
                   style={{
-                    background: active ? "rgba(43, 71, 255, 0.15)" : "rgba(255,255,255,0.03)",
-                    color: active ? "#1a2b6b" : undefined,
+                    background: active ? "rgba(43, 71, 255, 0.15)" : "rgba(20,20,19,0.04)",
+                    color: active ? "#C96442" : undefined,
                   }}
                 >
                   <Icon size={15} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className={"text-[13px] font-medium " + (active ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")} style={{ transition: "color 0.2s" }}>
+                  <p className={"text-[13px] font-medium " + (active ? "text-ink" : "text-zinc-400 group-hover:text-zinc-200")} style={{ transition: "color 0.2s" }}>
                     {label}
                   </p>
                   <p className="text-[10px] text-zinc-600 truncate">{desc}</p>
@@ -120,7 +120,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* System status */}
           <div
             className="mx-2 px-3 py-3 rounded-lg"
-            style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}
+            style={{ background: "rgba(20,20,19,0.03)", border: "1px solid rgba(20,20,19,0.06)" }}
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-semibold tracking-[0.15em] text-zinc-600 uppercase">System</span>
@@ -154,11 +154,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           style={{
             background: "rgba(8, 9, 13, 0.8)",
             backdropFilter: "blur(12px)",
-            borderBottom: "1px solid rgba(255,255,255,0.04)",
+            borderBottom: "1px solid rgba(20,20,19,0.06)",
           }}
         >
           <div>
-            <h2 className="text-[15px] font-semibold text-white">
+            <h2 className="text-[15px] font-semibold text-ink">
               {nav.find((n) => n.to === location.pathname)?.label || "Page"}
             </h2>
             <p className="text-[11px] text-zinc-500">
@@ -167,14 +167,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex items-center gap-3">
             <div className="text-[11px] text-zinc-600 font-mono">{new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}</div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-white" style={{ background: "linear-gradient(135deg, #1a2b6b, #243b8f)" }}>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center text-[11px] font-bold text-ink" style={{ background: "linear-gradient(135deg, #C96442, #B5573A)" }}>
               A
             </div>
           </div>
         </div>
 
         {/* Page content */}
-        <div className="p-8 text-white">{children}</div>
+        <div className="p-8 text-ink">{children}</div>
       </main>
     </div>
   )

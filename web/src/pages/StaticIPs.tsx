@@ -82,7 +82,7 @@ export default function StaticIPs() {
         </h2>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover"
         >
           <Plus size={14} /> 新增独享 IP Plan
         </button>
@@ -145,7 +145,7 @@ export default function StaticIPs() {
                             proxy_note: r.proxy_note,
                           })
                         }}
-                        className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-white rounded"
+                        className="px-2 py-1 text-xs bg-zinc-800 hover:bg-zinc-700 text-ink rounded"
                       >
                         Edit
                       </button>

@@ -41,7 +41,7 @@ function InfoTile({ icon: Icon, title, value, ok }: { icon: any; title: string; 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 min-h-[116px]">
       <div className="flex items-center justify-between mb-4">
-        <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 text-zinc-300">
+        <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-ink/5 text-zinc-300">
           <Icon size={16} />
         </div>
         <StatePill ok={ok} label={ok ? "OK" : "待处理"} />
@@ -99,7 +99,7 @@ export default function TelegramBot() {
         <button
           onClick={load}
           disabled={loading}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 disabled:opacity-60"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover disabled:opacity-60"
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} /> Refresh
         </button>
@@ -119,7 +119,7 @@ export default function TelegramBot() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
           <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-medium text-white">Actions</h3>
+              <h3 className="text-sm font-medium text-ink">Actions</h3>
               <p className="text-xs text-zinc-500 mt-0.5">Run live Telegram checks from the admin panel.</p>
             </div>
             <StatePill ok={allReady} label={allReady ? "链路完整" : "需要补配置"} />
@@ -128,7 +128,7 @@ export default function TelegramBot() {
             <button
               onClick={() => runAction("admin", "/admin/tg/test-admin-notice", "Admin test notice sent")}
               disabled={busy !== "" || !botReady || !status.admin_bound}
-              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-white/[0.03] disabled:opacity-40"
+              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-surface/[0.03] disabled:opacity-40"
             >
               <span className="flex items-center gap-3">
                 <Send size={16} className="text-blue-300" />
@@ -143,7 +143,7 @@ export default function TelegramBot() {
             <button
               onClick={() => runAction("daily", "/admin/tg/test-post", "Daily test post sent")}
               disabled={busy !== "" || !botReady || !status.group_registered}
-              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-white/[0.03] disabled:opacity-40"
+              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-surface/[0.03] disabled:opacity-40"
             >
               <span className="flex items-center gap-3">
                 <CalendarClock size={16} className="text-green-300" />
@@ -158,7 +158,7 @@ export default function TelegramBot() {
             <button
               onClick={() => runAction("activity", "/admin/tg/announce-activity", "Activity announcement sent and pinned")}
               disabled={busy !== "" || !botReady || !status.group_registered}
-              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-white/[0.03] disabled:opacity-40"
+              className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-surface/[0.03] disabled:opacity-40"
             >
               <span className="flex items-center gap-3">
                 <Megaphone size={16} className="text-purple-300" />
@@ -173,15 +173,15 @@ export default function TelegramBot() {
         </div>
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
-          <h3 className="text-sm font-medium text-white mb-3">Setup</h3>
+          <h3 className="text-sm font-medium text-ink mb-3">Setup</h3>
           <div className="space-y-4 text-sm">
             <div>
               <div className="text-xs text-zinc-500 mb-1">Admin binding</div>
-              <code className="block text-xs bg-black border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300 break-words">/link {status.admin_username || "admin"} &lt;面板密码&gt;</code>
+              <code className="block text-xs bg-surface border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300 break-words">/link {status.admin_username || "admin"} &lt;面板密码&gt;</code>
             </div>
             <div>
               <div className="text-xs text-zinc-500 mb-1">Group registration</div>
-              <code className="block text-xs bg-black border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300">/register_group</code>
+              <code className="block text-xs bg-surface border border-zinc-800 rounded-lg px-3 py-2 text-zinc-300">/register_group</code>
             </div>
             <div className="pt-2 border-t border-zinc-800 text-xs leading-relaxed text-zinc-500">
               Bot 必须在群里，且能看到新成员事件。管理员账号绑定后，新人入群会自动私发给管理员。

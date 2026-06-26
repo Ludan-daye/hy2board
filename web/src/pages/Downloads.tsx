@@ -49,7 +49,7 @@ export default function Downloads() {
   const order = ["windows", "macos", "ios", "android", "linux"]
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-surface text-ink">
       <header className="border-b border-zinc-800 px-6 py-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold flex items-center gap-2">
@@ -57,7 +57,7 @@ export default function Downloads() {
           </h1>
           <p className="text-xs text-zinc-500 mt-1">下载推荐的代理客户端，支持 Hysteria 2 协议</p>
         </div>
-        <a href="/" className="text-xs text-zinc-500 hover:text-white">← 返回</a>
+        <a href="/" className="text-xs text-zinc-500 hover:text-ink">← 返回</a>
       </header>
 
       <main className="max-w-5xl mx-auto p-6">
@@ -66,7 +66,7 @@ export default function Downloads() {
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li><span className="text-zinc-300">订阅链接</span>：登录 admin 后台 → Users 页面 → 找到对应用户 → 点 🔗 复制订阅地址</li>
             <li><span className="text-zinc-300">客户端选哪个</span>：Windows/Android 选 NekoBox 或 V2RayN；macOS 选 V2Box 或 ClashX Meta；iOS 选 Shadowrocket / Stash</li>
-            <li><span className="text-zinc-300">订阅格式</span>：v2ray 系列用 <code className="bg-black px-1 rounded">?format=v2ray</code>；Clash/Mihomo 用 <code className="bg-black px-1 rounded">?format=clash</code>；Surge/Loon 用 <code className="bg-black px-1 rounded">?format=surge</code>；Shadowrocket 用 <code className="bg-black px-1 rounded">?format=shadowrocket-conf</code></li>
+            <li><span className="text-zinc-300">订阅格式</span>：v2ray 系列用 <code className="bg-surface px-1 rounded">?format=v2ray</code>；Clash/Mihomo 用 <code className="bg-surface px-1 rounded">?format=clash</code>；Surge/Loon 用 <code className="bg-surface px-1 rounded">?format=surge</code>；Shadowrocket 用 <code className="bg-surface px-1 rounded">?format=shadowrocket-conf</code></li>
           </ul>
         </div>
 
@@ -93,12 +93,12 @@ export default function Downloads() {
                     <div className="mt-auto flex gap-2 pt-3">
                       {it.external_url ? (
                         <a href={it.external_url} target="_blank" rel="noreferrer"
-                           className="flex items-center justify-center gap-1.5 flex-1 px-3 py-2 bg-white text-black rounded-lg text-xs font-medium hover:bg-zinc-200">
+                           className="flex items-center justify-center gap-1.5 flex-1 px-3 py-2 bg-clay text-white rounded-lg text-xs font-medium hover:bg-clay-hover">
                           <ExternalLink size={12} /> App Store
                         </a>
                       ) : it.available ? (
                         <a href={`/dl/${it.filename}`}
-                           className="flex items-center justify-center gap-1.5 flex-1 px-3 py-2 bg-white text-black rounded-lg text-xs font-medium hover:bg-zinc-200">
+                           className="flex items-center justify-center gap-1.5 flex-1 px-3 py-2 bg-clay text-white rounded-lg text-xs font-medium hover:bg-clay-hover">
                           <Download size={12} /> 下载 ({fmtBytes(it.size_bytes)})
                         </a>
                       ) : (

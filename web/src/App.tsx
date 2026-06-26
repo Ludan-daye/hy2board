@@ -19,7 +19,7 @@ const Downloads = lazy(() => import("@/pages/Downloads"))
 
 function Fallback() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-zinc-500 text-sm">
+    <div className="min-h-screen flex items-center justify-center bg-surface text-zinc-500 text-sm">
       <span className="inline-block w-4 h-4 border-2 border-zinc-700 border-t-zinc-400 rounded-full animate-spin mr-2" />
       Loading...
     </div>

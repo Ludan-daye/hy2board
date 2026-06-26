@@ -92,7 +92,7 @@ export default function AuditLogs() {
         </h2>
         <button
           onClick={load}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 disabled:opacity-60"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover disabled:opacity-60"
           disabled={loading}
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} /> Refresh
@@ -100,7 +100,7 @@ export default function AuditLogs() {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-3">
-        <select value={entity} onChange={e => setEntity(e.target.value)} className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white">
+        <select value={entity} onChange={e => setEntity(e.target.value)} className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink">
           <option value="">All entities</option>
           <option value="node">Node</option>
           <option value="user">User</option>
@@ -109,7 +109,7 @@ export default function AuditLogs() {
           <option value="cost">Cost</option>
           <option value="telegram">Telegram</option>
         </select>
-        <select value={action} onChange={e => setAction(e.target.value)} className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white">
+        <select value={action} onChange={e => setAction(e.target.value)} className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink">
           <option value="">All actions</option>
           {actions.map(a => <option key={a} value={a}>{actionLabels[a] || a}</option>)}
         </select>
@@ -118,9 +118,9 @@ export default function AuditLogs() {
           onChange={e => setActor(e.target.value)}
           onKeyDown={e => { if (e.key === "Enter") load() }}
           placeholder="Actor"
-          className="px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+          className="px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
         />
-        <button onClick={() => { setActor(""); setAction(""); setEntity("") }} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">Clear</button>
+        <button onClick={() => { setActor(""); setAction(""); setEntity("") }} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">Clear</button>
       </div>
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">

@@ -61,7 +61,7 @@ export default function Plans() {
         <h2 className="text-xl font-semibold">Plans</h2>
         <button
           onClick={() => setShowNew(true)}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover"
         >
           <Plus size={14} /> Add Plan
         </button>
@@ -109,7 +109,7 @@ export default function Plans() {
                   <td className="p-3 text-right space-x-2">
                     <button
                       onClick={(e) => { e.stopPropagation(); setEditing(r) }}
-                      className="p-1.5 rounded hover:bg-zinc-700 text-zinc-400 hover:text-white"
+                      className="p-1.5 rounded hover:bg-zinc-700 text-zinc-400 hover:text-ink"
                     >
                       <Edit2 size={14} />
                     </button>

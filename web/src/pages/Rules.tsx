@@ -162,7 +162,7 @@ export default function Rules() {
     }
   }
 
-  const inputCls = "px-3 py-2 bg-black border border-zinc-700 rounded-lg text-sm text-white focus:outline-none focus:border-zinc-500"
+  const inputCls = "px-3 py-2 bg-surface border border-zinc-700 rounded-lg text-sm text-ink focus:outline-none focus:border-zinc-500"
   const ruleSummary = {
     total: rules.length,
     enabled: rules.filter((r) => r.enabled).length,
@@ -180,7 +180,7 @@ export default function Rules() {
         </div>
         <button
           onClick={startCreate}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover"
         >
           <Plus size={14} /> Add Rule
         </button>
@@ -193,7 +193,7 @@ export default function Rules() {
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="text-sm font-medium text-zinc-400">{editId ? "Edit Rule" : "New Rule"}</h3>
-            <button onClick={resetForm} className="text-zinc-500 hover:text-white" title="Close">
+            <button onClick={resetForm} className="text-zinc-500 hover:text-ink" title="Close">
               <X size={14} />
             </button>
           </div>
@@ -235,7 +235,7 @@ export default function Rules() {
                 type="checkbox"
                 checked={form.enabled}
                 onChange={(e) => setForm({ ...form, enabled: e.target.checked })}
-                className="w-4 h-4 rounded border-zinc-600 bg-black"
+                className="w-4 h-4 rounded border-zinc-600 bg-surface"
               />
               Enabled
             </label>
@@ -245,7 +245,7 @@ export default function Rules() {
             <button
               onClick={submit}
               disabled={loading}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 disabled:opacity-60"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover disabled:opacity-60"
             >
               <Save size={14} /> {editId ? "Save Changes" : "Create Rule"}
             </button>
@@ -256,13 +256,13 @@ export default function Rules() {
             >
               <Eye size={14} /> Preview
             </button>
-            <button onClick={resetForm} className="px-4 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
+            <button onClick={resetForm} className="px-4 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
           </div>
 
           {preview && (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-4">
               {(["clash", "surge", "shadowrocket"] as const).map((name) => (
-                <div key={name} className="bg-black border border-zinc-800 rounded-lg p-3">
+                <div key={name} className="bg-surface border border-zinc-800 rounded-lg p-3">
                   <div className="text-xs text-zinc-500 uppercase mb-2">{name}</div>
                   <pre className="text-xs text-zinc-200 whitespace-pre-wrap break-all">{preview[name]}</pre>
                 </div>
@@ -316,7 +316,7 @@ export default function Rules() {
                 <td className="p-4 text-xs text-zinc-500">{formatTime(rule.UpdatedAt)}</td>
                 <td className="p-4">
                   <div className="flex items-center justify-end gap-1">
-                    <button onClick={() => startEdit(rule)} title="Edit" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-white">
+                    <button onClick={() => startEdit(rule)} title="Edit" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-ink">
                       <Edit2 size={14} />
                     </button>
                     <button onClick={() => remove(rule)} title="Delete" className="p-1.5 rounded hover:bg-zinc-800 text-zinc-500 hover:text-red-400">

@@ -49,11 +49,11 @@ export default function PaymentDialog(p: Props) {
     }
   }
 
-  const inputCls = "px-3 py-2 bg-black border border-zinc-700 rounded text-sm text-white"
+  const inputCls = "px-3 py-2 bg-surface border border-zinc-700 rounded text-sm text-ink"
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-[420px] max-w-[90vw]">
@@ -105,8 +105,8 @@ export default function PaymentDialog(p: Props) {
         </div>
 
         <div className="flex justify-end gap-2">
-          <button onClick={p.onCancel} disabled={busy} className="px-3 py-2 text-sm text-zinc-400 hover:text-white">Cancel</button>
-          <button onClick={submit} disabled={busy || paid === ""} className="px-3 py-2 bg-white text-black rounded text-sm font-medium hover:bg-zinc-200 disabled:opacity-40">
+          <button onClick={p.onCancel} disabled={busy} className="px-3 py-2 text-sm text-zinc-400 hover:text-ink">Cancel</button>
+          <button onClick={submit} disabled={busy || paid === ""} className="px-3 py-2 bg-clay text-white rounded text-sm font-medium hover:bg-clay-hover disabled:opacity-40">
             {busy ? "..." : "Confirm"}
           </button>
         </div>

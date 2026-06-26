@@ -70,7 +70,7 @@ function Card({ icon: Icon, title, children, right }: {
   icon: React.ElementType; title: string; children: React.ReactNode; right?: React.ReactNode
 }) {
   return (
-    <div className="rounded-xl p-5" style={{ background: "#111318", border: "1px solid rgba(255,255,255,0.06)" }}>
+    <div className="rounded-xl p-5" style={{ background: "#111318", border: "1px solid rgba(20,20,19,0.08)" }}>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Icon size={14} className="text-zinc-500" />
@@ -84,7 +84,7 @@ function Card({ icon: Icon, title, children, right }: {
 }
 
 // One dense cell in the top health bar (label + value, optional click navigation).
-function HealthCell({ label, value, tone = "text-white", onClick }: {
+function HealthCell({ label, value, tone = "text-ink", onClick }: {
   label: string; value: React.ReactNode; tone?: string; onClick?: () => void
 }) {
   return (
@@ -214,7 +214,7 @@ export default function Dashboard() {
       {/* Zone 1: health bar — is everything OK at a glance */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
         <HealthCell label="节点 healthy/total" value={`${stats.healthy_nodes}/${stats.total_nodes}`}
-          tone={stats.healthy_nodes < stats.total_nodes ? "text-amber-400" : "text-white"} />
+          tone={stats.healthy_nodes < stats.total_nodes ? "text-amber-400" : "text-ink"} />
         <HealthCell label="在线" value={totalOnline} tone="text-blue-300" />
         <HealthCell label="告警" value={totalAlerts}
           tone={totalAlerts > 0 ? "text-red-400" : "text-zinc-500"} onClick={() => navigate("/alerts")} />
@@ -235,7 +235,7 @@ export default function Dashboard() {
                   const urgent = d <= 2
                   return (
                     <div key={u.ID} className="flex items-center justify-between py-1.5 px-2 rounded" style={{ background: urgent ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.04)" }}>
-                      <span className="text-[13px] text-white truncate">{u.username}</span>
+                      <span className="text-[13px] text-ink truncate">{u.username}</span>
                       <span className={"text-[11px] font-mono " + (urgent ? "text-red-400" : "text-amber-400")}>
                         {d === 0 ? "today" : d === 1 ? "tomorrow" : `${d}d`}
                       </span>
@@ -253,10 +253,10 @@ export default function Dashboard() {
                   return (
                     <div key={u.ID} className="py-1.5 px-2 rounded" style={{ background: "rgba(239,68,68,0.04)" }}>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-[13px] text-white truncate">{u.username}</span>
+                        <span className="text-[13px] text-ink truncate">{u.username}</span>
                         <span className="text-[11px] font-mono text-red-400">{pct.toFixed(0)}%</span>
                       </div>
-                      <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.06)" }}>
+                      <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: "rgba(20,20,19,0.08)" }}>
                         <div className="h-full rounded-full" style={{ width: pct + "%", background: pct > 95 ? "#ef4444" : "#f59e0b" }} />
                       </div>
                     </div>
@@ -271,7 +271,7 @@ export default function Dashboard() {
                 {deadNodes.slice(0, 4).map(n => (
                   <div key={n.id} className="flex items-center justify-between py-1.5 px-2 rounded" style={{ background: "rgba(239,68,68,0.06)" }}>
                     <div>
-                      <p className="text-[13px] text-white">{n.name}</p>
+                      <p className="text-[13px] text-ink">{n.name}</p>
                       <p className="text-[10px] text-zinc-600 font-mono">{n.host}:{n.port}</p>
                     </div>
                     <span className="relative flex h-2 w-2"><span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" /></span>
@@ -306,7 +306,7 @@ export default function Dashboard() {
                       <stop offset="95%" stopColor="#d4a017" stopOpacity={0} />
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(20,20,19,0.06)" />
                   <XAxis dataKey="time" tick={{ fontSize: 10, fill: "#555" }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 10, fill: "#555" }} tickFormatter={(v) => fmt(v)} width={55} axisLine={false} tickLine={false} />
                   <Tooltip {...tooltipStyle} formatter={(v: unknown) => fmtSpeed(Number(v))} />
@@ -336,7 +336,7 @@ export default function Dashboard() {
                       <div className="flex items-center justify-between text-[11px] mb-1">
                         <span className="flex items-center gap-2">
                           <span className={"inline-block w-5 text-center rounded font-bold text-[10px] " + (i === 0 ? "text-amber-400" : "text-zinc-500")}>#{i + 1}</span>
-                          <span className="text-white font-medium">{u.name}</span>
+                          <span className="text-ink font-medium">{u.name}</span>
                         </span>
                         <span className="font-mono text-zinc-300">{fmtSpeed(u.total)}</span>
                       </div>
@@ -359,7 +359,7 @@ export default function Dashboard() {
 
       {/* Zone 4: more analysis (collapsed by default) */}
       <button onClick={() => setShowAnalysis(s => !s)}
-        className="mb-3 text-sm text-zinc-400 hover:text-white flex items-center gap-1">
+        className="mb-3 text-sm text-zinc-400 hover:text-ink flex items-center gap-1">
         <span>{showAnalysis ? "▾" : "▸"}</span> 更多分析
       </button>
       {showAnalysis && (
@@ -382,7 +382,7 @@ export default function Dashboard() {
                     {statusPie.map(d => (
                       <span key={d.name} className="flex items-center gap-1.5 text-[10px] text-zinc-400">
                         <span className="w-2 h-2 rounded-sm" style={{ background: d.color }} />
-                        {d.name} <span className="text-white font-semibold">{d.value}</span>
+                        {d.name} <span className="text-ink font-semibold">{d.value}</span>
                       </span>
                     ))}
                   </div>
@@ -404,7 +404,7 @@ export default function Dashboard() {
                         <div className="relative flex items-center justify-between px-2 py-1.5 text-[12px]">
                           <span className="flex items-center gap-2 truncate">
                             <span className="text-zinc-500 font-mono w-4">{i + 1}.</span>
-                            <span className="text-white truncate">{u.username}</span>
+                            <span className="text-ink truncate">{u.username}</span>
                             {u.chain_proxy && <span className="text-[9px] px-1 py-0.5 rounded bg-purple-500/10 text-purple-400">AI</span>}
                           </span>
                           <span className="font-mono text-zinc-300 ml-2">{fmt(uTotal)}</span>
@@ -425,11 +425,11 @@ export default function Dashboard() {
                 let totalTraffic = 0
                 if (n.traffic) Object.values(n.traffic).forEach(t => { totalTraffic += t.tx + t.rx })
                 return (
-                  <div key={n.id} className="rounded-lg p-3" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                  <div key={n.id} className="rounded-lg p-3" style={{ background: "rgba(20,20,19,0.03)", border: "1px solid rgba(20,20,19,0.06)" }}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className={"w-2 h-2 rounded-full flex-shrink-0 " + (n.healthy ? "bg-green-500" : "bg-red-500")} style={n.healthy ? { boxShadow: "0 0 6px rgba(34,197,94,0.5)" } : {}} />
-                        <span className="text-[13px] font-medium text-white truncate">{n.name}</span>
+                        <span className="text-[13px] font-medium text-ink truncate">{n.name}</span>
                       </div>
                       <span className="text-[10px] text-zinc-500">{n.online} online</span>
                     </div>
@@ -447,7 +447,7 @@ export default function Dashboard() {
                     <div className="flex items-end justify-between">
                       <div>
                         <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Now</p>
-                        <p className="text-[14px] font-bold text-white font-mono">{fmtSpeed(latestSpeed)}</p>
+                        <p className="text-[14px] font-bold text-ink font-mono">{fmtSpeed(latestSpeed)}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-[10px] text-zinc-500 uppercase tracking-wider">Total</p>
@@ -463,8 +463,8 @@ export default function Dashboard() {
           {staticIPs.length > 0 && (
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-semibold text-white flex items-center gap-2">🌐 Static IPs</h3>
-                <a href="/static-ips" className="text-xs text-zinc-400 hover:text-white">管理 →</a>
+                <h3 className="text-sm font-semibold text-ink flex items-center gap-2">🌐 Static IPs</h3>
+                <a href="/static-ips" className="text-xs text-zinc-400 hover:text-ink">管理 →</a>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {staticIPs.map(ip => (
@@ -489,7 +489,7 @@ export default function Dashboard() {
               <Card icon={TrendingUp} title="Node Traffic Comparison">
                 <ResponsiveContainer width="100%" height={200}>
                   <BarChart data={nodeBarData} barGap={4}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.04)" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(20,20,19,0.06)" />
                     <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#666" }} axisLine={false} tickLine={false} />
                     <YAxis tick={{ fontSize: 10, fill: "#555" }} tickFormatter={(v) => fmt(v)} width={60} axisLine={false} tickLine={false} />
                     <Tooltip {...tooltipStyle} formatter={(v: unknown) => fmt(Number(v))} />

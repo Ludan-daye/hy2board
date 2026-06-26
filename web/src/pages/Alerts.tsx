@@ -65,7 +65,7 @@ function StatCard({ icon: Icon, label, value, tone }: { icon: any; label: string
         <span>{label}</span>
         <Icon size={15} />
       </div>
-      <div className="text-2xl font-semibold text-white">{value}</div>
+      <div className="text-2xl font-semibold text-ink">{value}</div>
     </div>
   )
 }
@@ -74,7 +74,7 @@ function UserSection({ title, icon: Icon, rows, tone, empty }: { title: string; 
   return (
     <section className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-white flex items-center gap-2">
+        <h3 className="text-sm font-medium text-ink flex items-center gap-2">
           <Icon size={15} className={tone} /> {title}
         </h3>
         <span className="text-xs text-zinc-500">{rows.length}</span>
@@ -84,7 +84,7 @@ function UserSection({ title, icon: Icon, rows, tone, empty }: { title: string; 
       ) : (
         <div className="divide-y divide-zinc-800">
           {rows.map((u) => (
-            <Link to={`/users?search=${encodeURIComponent(u.username)}`} key={`${title}-${u.id}`} className="block px-4 py-3 hover:bg-white/[0.03]">
+            <Link to={`/users?search=${encodeURIComponent(u.username)}`} key={`${title}-${u.id}`} className="block px-4 py-3 hover:bg-surface/[0.03]">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <div className="text-sm font-medium text-zinc-100">{u.username}</div>
@@ -109,7 +109,7 @@ function NodeSection({ rows }: { rows: NodeBrief[] }) {
   return (
     <section className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
       <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
-        <h3 className="text-sm font-medium text-white flex items-center gap-2">
+        <h3 className="text-sm font-medium text-ink flex items-center gap-2">
           <ServerCrash size={15} className="text-red-400" /> Down Nodes
         </h3>
         <span className="text-xs text-zinc-500">{rows.length}</span>
@@ -119,7 +119,7 @@ function NodeSection({ rows }: { rows: NodeBrief[] }) {
       ) : (
         <div className="divide-y divide-zinc-800">
           {rows.map((n) => (
-            <Link to="/nodes" key={n.id} className="block px-4 py-3 hover:bg-white/[0.03]">
+            <Link to="/nodes" key={n.id} className="block px-4 py-3 hover:bg-surface/[0.03]">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <div className="text-sm font-medium text-zinc-100">{n.name}</div>
@@ -175,7 +175,7 @@ export default function Alerts() {
         <button
           onClick={load}
           disabled={loading}
-          className="flex items-center gap-2 px-3 py-1.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-zinc-200 disabled:opacity-60"
+          className="flex items-center gap-2 px-3 py-1.5 bg-clay text-white rounded-lg text-sm font-medium hover:bg-clay-hover disabled:opacity-60"
         >
           <RefreshCw size={14} className={loading ? "animate-spin" : ""} /> Refresh
         </button>
