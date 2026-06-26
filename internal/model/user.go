@@ -19,6 +19,7 @@ type User struct {
 	SubToken      string    `gorm:"uniqueIndex;not null" json:"sub_token"`
 	TrafficLimit  int64     `gorm:"default:0" json:"traffic_limit"`
 	TrafficUsed   int64     `gorm:"default:0" json:"traffic_used"`
+	MaxIPs        int       `gorm:"default:0" json:"max_ips"` // 0 = unlimited; max distinct concurrent source IPs
 	ExpiresAt     time.Time `json:"expires_at"`
 	Enabled       bool      `gorm:"default:true" json:"enabled"`
 	NodeIDs       string    `gorm:"default:'all'" json:"node_ids"`

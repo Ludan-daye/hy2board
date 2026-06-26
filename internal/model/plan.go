@@ -6,6 +6,7 @@ type Plan struct {
 	gorm.Model
 	Name          string `gorm:"uniqueIndex;not null" json:"name"`
 	TrafficLimit  int64  `json:"traffic_limit"`              // bytes; 0 = unlimited
+	MaxIPs        int    `gorm:"default:0" json:"max_ips"`   // 0 = unlimited concurrent source IPs
 	DurationDays  int    `json:"duration_days"`              // for ExpiresAt calc
 	NodeIDs       string `gorm:"default:'all'" json:"node_ids"`
 	RuleAI        bool   `json:"rule_ai"`

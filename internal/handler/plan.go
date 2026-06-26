@@ -58,6 +58,7 @@ type planListRow struct {
 func planUserSubscriptionUpdates(p model.Plan) map[string]interface{} {
 	return map[string]interface{}{
 		"traffic_limit":  p.TrafficLimit,
+		"max_ips":        p.MaxIPs,
 		"node_ids":       p.NodeIDs,
 		"rule_ai":        p.RuleAI,
 		"rule_streaming": p.RuleStreaming,
