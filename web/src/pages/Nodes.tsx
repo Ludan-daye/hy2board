@@ -403,11 +403,11 @@ obfs node:
           </div>
           <div className="text-2xl font-semibold text-ink">{summary.total}</div>
         </div>
-        <div className="bg-zinc-900 border border-blue-500/20 rounded-lg p-3">
-          <div className="flex items-center justify-between text-blue-300 text-xs mb-2">
+        <div className="bg-zinc-900 border border-clay/20 rounded-lg p-3">
+          <div className="flex items-center justify-between text-clay text-xs mb-2">
             <span>实时在线</span><Wifi size={14} />
           </div>
-          <div className="text-2xl font-semibold text-blue-300">{Object.values(live).reduce((s, v) => s + v.online, 0)}</div>
+          <div className="text-2xl font-semibold text-clay">{Object.values(live).reduce((s, v) => s + v.online, 0)}</div>
         </div>
         <div className="bg-zinc-900 border border-green-500/20 rounded-lg p-3">
           <div className="flex items-center justify-between text-green-400 text-xs mb-2">
@@ -480,7 +480,7 @@ obfs node:
                 <td className="p-4 text-xs font-mono whitespace-nowrap">
                   {speed[n.ID] && (speed[n.ID].up > 0 || speed[n.ID].down > 0) ? (
                     <>
-                      <span className="text-sky-400">↑{fmtSpeed(speed[n.ID].up)}</span>
+                      <span className="text-clay">↑{fmtSpeed(speed[n.ID].up)}</span>
                       <span className="text-emerald-400 ml-2">↓{fmtSpeed(speed[n.ID].down)}</span>
                     </>
                   ) : <span className="text-zinc-600">-</span>}
@@ -488,7 +488,7 @@ obfs node:
                 <td className="p-4 text-zinc-400">{n.sni || "-"}</td>
                 <td className="p-4">
                   {n.obfs_type ? (
-                    <span className="px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400">{n.obfs_type}</span>
+                    <span className="px-2 py-0.5 rounded text-xs bg-clay/10 text-clay">{n.obfs_type}</span>
                   ) : (
                     <span className="text-zinc-600">-</span>
                   )}
@@ -496,7 +496,7 @@ obfs node:
                 <td className="p-4 text-zinc-400 text-xs">
                   {n.traffic_api ? (
                     <div className="max-w-[260px]">
-                      <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400">Configured</span>
+                      <span className="px-2 py-0.5 rounded bg-clay/10 text-clay">Configured</span>
                       {n.probe?.last_error && (
                         <p className="mt-1 truncate text-red-300" title={n.probe.last_error}>{n.probe.last_error}</p>
                       )}

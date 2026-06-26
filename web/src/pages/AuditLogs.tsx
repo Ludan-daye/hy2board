@@ -142,7 +142,7 @@ export default function AuditLogs() {
                 <td className="p-3 font-mono text-xs text-zinc-400 whitespace-nowrap">{new Date(row.CreatedAt).toLocaleString()}</td>
                 <td className="p-3 text-zinc-200">{row.actor || "-"}</td>
                 <td className="p-3">
-                  <span className="px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 text-xs">{actionLabels[row.action] || row.action}</span>
+                  <span className="px-2 py-0.5 rounded bg-clay/10 text-clay text-xs">{actionLabels[row.action] || row.action}</span>
                 </td>
                 <td className="p-3 text-zinc-300">{entityLabel(row)}</td>
                 <td className="p-3 font-mono text-xs text-zinc-500">{row.ip || "-"}</td>

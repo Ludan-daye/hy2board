@@ -281,8 +281,8 @@ export default function PlanEditModal({
         {tab === "ip" && (
           <div className="space-y-3">
             {/* Quick Import — paste host:port:user:password from supplier */}
-            <div className="bg-blue-500/5 border border-blue-500/20 rounded p-2.5 space-y-1.5">
-              <label className="text-xs text-blue-300 uppercase tracking-wider">⚡ 一键粘贴导入</label>
+            <div className="bg-clay/5 border border-clay/20 rounded p-2.5 space-y-1.5">
+              <label className="text-xs text-clay uppercase tracking-wider">⚡ 一键粘贴导入</label>
               <input
                 placeholder="host:port:user:password"
                 onChange={(e) => {
@@ -445,7 +445,7 @@ export default function PlanEditModal({
                   setPwInput("")
                   alert("Password updated.")
                 }}
-                className="px-3 py-1.5 text-xs bg-blue-600 hover:bg-blue-500 text-ink rounded"
+                className="px-3 py-1.5 text-xs bg-clay hover:bg-clay text-ink rounded"
               >
                 Save
               </button>

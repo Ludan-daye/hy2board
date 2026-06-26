@@ -184,7 +184,7 @@ export default function Alerts() {
       <div className="grid grid-cols-2 xl:grid-cols-6 gap-3 mb-4">
         <StatCard icon={Clock3} label="Expiring" value={buckets.expiring_soon.length} tone="border-amber-500/20 text-amber-300" />
         <StatCard icon={AlertTriangle} label="Expired" value={buckets.expired.length} tone="border-red-500/20 text-red-300" />
-        <StatCard icon={TrendingUp} label="Near Limit" value={buckets.near_limit.length} tone="border-blue-500/20 text-blue-300" />
+        <StatCard icon={TrendingUp} label="Near Limit" value={buckets.near_limit.length} tone="border-clay/20 text-clay" />
         <StatCard icon={Ban} label="Over Limit" value={buckets.over_limit.length} tone="border-red-500/20 text-red-300" />
         <StatCard icon={Users} label="Disabled" value={buckets.disabled.length} tone="border-zinc-700 text-zinc-400" />
         <StatCard icon={ServerCrash} label="Down Nodes" value={buckets.dead_nodes.length} tone="border-red-500/20 text-red-300" />
@@ -193,7 +193,7 @@ export default function Alerts() {
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
         <UserSection title="Expiring Soon" icon={Clock3} rows={buckets.expiring_soon} tone="text-amber-300" empty="7 天内没有用户到期。" />
         <UserSection title="Expired" icon={AlertTriangle} rows={buckets.expired} tone="text-red-400" empty="没有已过期用户。" />
-        <UserSection title="Near Traffic Limit" icon={TrendingUp} rows={buckets.near_limit} tone="text-blue-300" empty="没有 80% 以上流量用户。" />
+        <UserSection title="Near Traffic Limit" icon={TrendingUp} rows={buckets.near_limit} tone="text-clay" empty="没有 80% 以上流量用户。" />
         <UserSection title="Over Traffic Limit" icon={Ban} rows={buckets.over_limit} tone="text-red-400" empty="没有超流量用户。" />
         <UserSection title="Disabled Users" icon={Users} rows={buckets.disabled} tone="text-zinc-400" empty="没有停用用户。" />
         <NodeSection rows={buckets.dead_nodes} />

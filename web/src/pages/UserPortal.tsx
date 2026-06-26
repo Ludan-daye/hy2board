@@ -79,7 +79,7 @@ export default function UserPortal() {
               href="/downloads"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-blue-400 bg-blue-400/10 border border-blue-400/20 hover:bg-blue-400/20 transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-clay bg-clay/10 border border-clay/20 hover:bg-clay/20 transition-colors"
             >
               <Download size={12} />
               客户端下载
@@ -121,12 +121,12 @@ export default function UserPortal() {
               </div>
               {info.traffic_limit > 0 && (
                 <div className="w-full h-3 bg-zinc-800 rounded-full overflow-hidden">
-                  <div className={"h-full rounded-full transition-all duration-500 " + (trafficPercent > 90 ? "bg-gradient-to-r from-red-600 to-red-400" : trafficPercent > 70 ? "bg-gradient-to-r from-yellow-600 to-yellow-400" : "bg-gradient-to-r from-blue-600 to-blue-400")} style={{ width: trafficPercent + "%" }} />
+                  <div className={"h-full rounded-full transition-all duration-500 " + (trafficPercent > 90 ? "bg-gradient-to-r from-red-600 to-red-400" : trafficPercent > 70 ? "bg-gradient-to-r from-yellow-600 to-yellow-400" : "bg-gradient-to-r from-clay to-clay-hover")} style={{ width: trafficPercent + "%" }} />
                 </div>
               )}
             </div>
             <div className="flex gap-6 text-sm">
-              <span className="flex items-center gap-1.5 text-zinc-400"><ArrowUp size={13} className="text-blue-400" />{formatBytes(info.traffic_tx)}</span>
+              <span className="flex items-center gap-1.5 text-zinc-400"><ArrowUp size={13} className="text-clay" />{formatBytes(info.traffic_tx)}</span>
               <span className="flex items-center gap-1.5 text-zinc-400"><ArrowDown size={13} className="text-green-400" />{formatBytes(info.traffic_rx)}</span>
             </div>
           </div>
@@ -141,14 +141,14 @@ export default function UserPortal() {
                 <ResponsiveContainer width="50%" height={130}>
                   <PieChart>
                     <Pie data={pieData} dataKey="value" cx="50%" cy="50%" outerRadius={50} innerRadius={30} strokeWidth={0}>
-                      <Cell fill="#3b82f6" />
-                      <Cell fill="#10b981" />
+                      <Cell fill="#C96442" />
+                      <Cell fill="#3F8A4D" />
                     </Pie>
                     <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 12 }} formatter={(v) => formatBytes(Number(v))} />
                   </PieChart>
                 </ResponsiveContainer>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm"><span className="w-3 h-3 rounded bg-blue-500" /><span className="text-zinc-400">Upload</span><span className="font-medium">{formatBytes(info.traffic_tx)}</span></div>
+                  <div className="flex items-center gap-2 text-sm"><span className="w-3 h-3 rounded bg-clay" /><span className="text-zinc-400">Upload</span><span className="font-medium">{formatBytes(info.traffic_tx)}</span></div>
                   <div className="flex items-center gap-2 text-sm"><span className="w-3 h-3 rounded bg-green-500" /><span className="text-zinc-400">Download</span><span className="font-medium">{formatBytes(info.traffic_rx)}</span></div>
                   <div className="text-xs text-zinc-500 mt-1">Ratio: 1:{info.traffic_tx > 0 ? (info.traffic_rx / info.traffic_tx).toFixed(0) : "∞"}</div>
                 </div>
@@ -166,15 +166,15 @@ export default function UserPortal() {
             <ResponsiveContainer width="100%" height={160}>
               <AreaChart data={history}>
                 <defs>
-                  <linearGradient id="utxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} /><stop offset="95%" stopColor="#3b82f6" stopOpacity={0} /></linearGradient>
-                  <linearGradient id="urxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#10b981" stopOpacity={0.3} /><stop offset="95%" stopColor="#10b981" stopOpacity={0} /></linearGradient>
+                  <linearGradient id="utxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#C96442" stopOpacity={0.3} /><stop offset="95%" stopColor="#C96442" stopOpacity={0} /></linearGradient>
+                  <linearGradient id="urxG" x1="0" y1="0" x2="0" y2="1"><stop offset="5%" stopColor="#3F8A4D" stopOpacity={0.3} /><stop offset="95%" stopColor="#3F8A4D" stopOpacity={0} /></linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D6" />
                 <XAxis dataKey="time" tick={{ fontSize: 9, fill: "#6B6862" }} />
                 <YAxis tick={{ fontSize: 9, fill: "#6B6862" }} tickFormatter={(v) => formatBytes(v)} width={55} />
                 <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
-                <Area type="monotone" dataKey="tx" stroke="#3b82f6" fill="url(#utxG)" name="Upload" strokeWidth={2} />
-                <Area type="monotone" dataKey="rx" stroke="#10b981" fill="url(#urxG)" name="Download" strokeWidth={2} />
+                <Area type="monotone" dataKey="tx" stroke="#C96442" fill="url(#utxG)" name="Upload" strokeWidth={2} />
+                <Area type="monotone" dataKey="rx" stroke="#3F8A4D" fill="url(#urxG)" name="Download" strokeWidth={2} />
               </AreaChart>
             </ResponsiveContainer>
           )}
@@ -187,11 +187,11 @@ export default function UserPortal() {
             <ResponsiveContainer width="100%" height={180}>
               <BarChart data={nodeBarData} barGap={2}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E0D6" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#a1a1aa" }} />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#6B6862" }} />
                 <YAxis tick={{ fontSize: 9, fill: "#6B6862" }} tickFormatter={(v) => formatBytes(v)} width={55} />
                 <Tooltip contentStyle={{ background: "#FAF9F5", border: "1px solid #E5E0D6", borderRadius: 8, fontSize: 11 }} formatter={(v) => formatBytes(Number(v))} />
-                <Bar dataKey="upload" fill="#3b82f6" radius={[4, 4, 0, 0]} name="Upload" />
-                <Bar dataKey="download" fill="#10b981" radius={[4, 4, 0, 0]} name="Download" />
+                <Bar dataKey="upload" fill="#C96442" radius={[4, 4, 0, 0]} name="Upload" />
+                <Bar dataKey="download" fill="#3F8A4D" radius={[4, 4, 0, 0]} name="Download" />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -223,13 +223,13 @@ export default function UserPortal() {
             href="/downloads"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 flex items-center justify-between bg-blue-500/10 border border-blue-500/20 hover:bg-blue-500/20 rounded-lg p-3 transition-colors"
+            className="mt-3 flex items-center justify-between bg-clay/10 border border-clay/20 hover:bg-clay/20 rounded-lg p-3 transition-colors"
           >
-            <div className="flex items-center gap-2 text-sm text-blue-300">
+            <div className="flex items-center gap-2 text-sm text-clay">
               <Download size={14} />
               <span>没有客户端？点击下载推荐的代理软件</span>
             </div>
-            <span className="text-xs text-blue-400">→</span>
+            <span className="text-xs text-clay">→</span>
           </a>
         </div>
 
@@ -245,7 +245,7 @@ export default function UserPortal() {
                     <span className="text-sm font-medium">{n.node}</span>
                   </div>
                   <div className="flex gap-4 text-xs text-zinc-400">
-                    <span className="flex items-center gap-1"><ArrowUp size={10} className="text-blue-400" />{formatBytes(n.tx)}</span>
+                    <span className="flex items-center gap-1"><ArrowUp size={10} className="text-clay" />{formatBytes(n.tx)}</span>
                     <span className="flex items-center gap-1"><ArrowDown size={10} className="text-green-400" />{formatBytes(n.rx)}</span>
                     <span className="font-medium text-ink">{formatBytes(n.tx + n.rx)}</span>
                   </div>

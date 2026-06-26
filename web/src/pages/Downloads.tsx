@@ -13,7 +13,7 @@ interface DownloadItem {
 }
 
 const platformLabels: Record<string, { label: string; icon: any; cls: string }> = {
-  windows: { label: "Windows",  icon: Monitor,    cls: "text-sky-400" },
+  windows: { label: "Windows",  icon: Monitor,    cls: "text-clay" },
   android: { label: "Android",  icon: Smartphone, cls: "text-green-400" },
   macos:   { label: "macOS",    icon: Apple,      cls: "text-zinc-300" },
   ios:     { label: "iOS",      icon: Apple,      cls: "text-zinc-300" },

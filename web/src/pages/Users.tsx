@@ -421,7 +421,7 @@ export default function Users() {
                         {u.username}
                         {u.telegram_id ? (
                           <span
-                            className="ml-1.5 text-[9px] px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-400 font-mono"
+                            className="ml-1.5 text-[9px] px-1.5 py-0.5 rounded bg-clay/10 text-clay font-mono"
                             title={`Telegram ID: ${u.telegram_id}`}
                           >
                             TG
@@ -434,7 +434,7 @@ export default function Users() {
                           if (!plan) return null
                           return (
                             <span
-                              className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-300 font-medium"
+                              className="text-[10px] px-1.5 py-0.5 rounded bg-clay/10 text-clay font-medium"
                               title={`Plan #${plan.ID}: ${plan.name}`}
                             >
                               {plan.name}
@@ -451,7 +451,7 @@ export default function Users() {
                       <p className="text-xs text-zinc-500">{formatBytes(liveUsed)} / {formatBytes(u.traffic_limit)}
                         {u.traffic_limit > 0 && (
                           <span className="inline-block w-16 h-1.5 bg-zinc-800 rounded-full ml-2 align-middle overflow-hidden">
-                            <span className={"block h-full rounded-full " + (trafficExceeded ? "bg-red-500" : "bg-blue-500")} style={{ width: Math.min(100, (liveUsed / u.traffic_limit) * 100) + "%" }} />
+                            <span className={"block h-full rounded-full " + (trafficExceeded ? "bg-red-500" : "bg-clay")} style={{ width: Math.min(100, (liveUsed / u.traffic_limit) * 100) + "%" }} />
                           </span>
                         )}
                         {activeNodes > 0 && <span className="ml-2 text-zinc-400">· {activeNodes}/{nodeTraffic.length} servers</span>}
@@ -464,15 +464,15 @@ export default function Users() {
                     <span className={"px-2 py-0.5 rounded text-xs " + (isActive ? "bg-green-500/10 text-green-400" : "bg-red-500/10 text-red-400")}>
                       {!u.enabled ? "Disabled" : isExpired ? "Expired" : trafficExceeded ? "Over Limit" : "Active"}
                     </span>
-                    {u.chain_proxy && <span className="px-2 py-0.5 rounded text-xs bg-purple-500/10 text-purple-400">AI</span>}
+                    {u.chain_proxy && <span className="px-2 py-0.5 rounded text-xs bg-clay/10 text-clay">AI</span>}
 
                     {/* Per-server traffic toggle */}
-                    <button onClick={() => setTrafficExpanded(isTraffic ? null : u.ID)} title="Per-server traffic" className={"p-1.5 rounded hover:bg-zinc-800 " + (isTraffic ? "text-blue-400" : "text-zinc-500 hover:text-ink")}>
+                    <button onClick={() => setTrafficExpanded(isTraffic ? null : u.ID)} title="Per-server traffic" className={"p-1.5 rounded hover:bg-zinc-800 " + (isTraffic ? "text-clay" : "text-zinc-500 hover:text-ink")}>
                       <Server size={14} />
                     </button>
 
                     {/* Subscription links toggle */}
-                    <button onClick={() => setExpanded(isExp ? null : u.ID)} title="Subscription Links" className={"p-1.5 rounded hover:bg-zinc-800 " + (isExp ? "text-blue-400" : "text-zinc-500 hover:text-ink")}>
+                    <button onClick={() => setExpanded(isExp ? null : u.ID)} title="Subscription Links" className={"p-1.5 rounded hover:bg-zinc-800 " + (isExp ? "text-clay" : "text-zinc-500 hover:text-ink")}>
                       {isExp ? <ChevronUp size={14} /> : <Link size={14} />}
                     </button>
 
@@ -551,7 +551,7 @@ export default function Users() {
                               </div>
                               <div className="flex items-center gap-4 text-xs text-zinc-500">
                                 <span className="flex items-center gap-1">
-                                  <ArrowUp size={10} className="text-blue-400" />
+                                  <ArrowUp size={10} className="text-clay" />
                                   <span className="font-mono">{fmt(n.tx)}</span>
                                 </span>
                                 <span className="flex items-center gap-1">
@@ -562,7 +562,7 @@ export default function Users() {
                               </div>
                               {n.total > 0 && (
                                 <div className="mt-2 w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                                  <div className="h-full bg-gradient-to-r from-blue-500 to-green-500" style={{ width: (n.total / maxTotal * 100) + "%" }} />
+                                  <div className="h-full bg-gradient-to-r from-clay to-green-500" style={{ width: (n.total / maxTotal * 100) + "%" }} />
                                 </div>
                               )}
                             </div>

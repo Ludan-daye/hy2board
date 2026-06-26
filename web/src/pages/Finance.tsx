@@ -134,13 +134,13 @@ export default function Finance() {
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 mb-6 h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={buckets.map(b => ({ ...b, total_yuan: b.total_cents / 100, cost_yuan: (b.cost_cents || 0) / 100, profit_yuan: (b.profit_cents ?? (b.total_cents - (b.cost_cents || 0))) / 100 }))}>
-            <CartesianGrid stroke="#27272a" strokeDasharray="3 3" />
-            <XAxis dataKey="month" stroke="#71717a" tick={{ fontSize: 12 }} />
-            <YAxis stroke="#71717a" tick={{ fontSize: 12 }} />
-            <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #27272a" }} />
-            <Line type="monotone" name="收入" dataKey="total_yuan" stroke="#60a5fa" strokeWidth={2} dot={{ r: 3 }} />
-            <Line type="monotone" name="成本" dataKey="cost_yuan" stroke="#f87171" strokeWidth={2} dot={{ r: 3 }} />
-            <Line type="monotone" name="利润" dataKey="profit_yuan" stroke="#4ade80" strokeWidth={2} dot={{ r: 3 }} />
+            <CartesianGrid stroke="#E5E0D6" strokeDasharray="3 3" />
+            <XAxis dataKey="month" stroke="#6B6862" tick={{ fontSize: 12 }} />
+            <YAxis stroke="#6B6862" tick={{ fontSize: 12 }} />
+            <Tooltip contentStyle={{ background: "#18181b", border: "1px solid #E5E0D6" }} />
+            <Line type="monotone" name="收入" dataKey="total_yuan" stroke="#C96442" strokeWidth={2} dot={{ r: 3 }} />
+            <Line type="monotone" name="成本" dataKey="cost_yuan" stroke="#BE3A31" strokeWidth={2} dot={{ r: 3 }} />
+            <Line type="monotone" name="利润" dataKey="profit_yuan" stroke="#3F8A4D" strokeWidth={2} dot={{ r: 3 }} />
           </LineChart>
         </ResponsiveContainer>
       </div>

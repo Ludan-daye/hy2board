@@ -309,7 +309,7 @@ export default function Rules() {
                   <div className="font-mono text-xs text-zinc-300 break-all">{rule.value}</div>
                 </td>
                 <td className="p-4">
-                  <span className="px-2 py-0.5 rounded text-xs bg-blue-500/10 text-blue-400">{rule.policy}</span>
+                  <span className="px-2 py-0.5 rounded text-xs bg-clay/10 text-clay">{rule.policy}</span>
                 </td>
                 <td className="p-4 text-zinc-400">{rule.sort_order}</td>
                 <td className="p-4 text-zinc-400 max-w-[240px] truncate" title={rule.note}>{rule.note || "-"}</td>

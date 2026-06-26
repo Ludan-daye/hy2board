@@ -140,7 +140,7 @@ export default function UserEditModal({ user, onClose, onSaved }: {
               className={
                 "px-4 py-2 text-xs uppercase tracking-wider " +
                 (tab === t
-                  ? "text-ink border-b-2 border-blue-400"
+                  ? "text-ink border-b-2 border-clay"
                   : "text-zinc-500 hover:text-zinc-300")
               }
             >
@@ -293,7 +293,7 @@ function TelegramLinkRow({ user, onSaved }: { user: EditableUser; onSaved: () =>
   }
   return (
     <div className="flex items-center gap-2 mt-1">
-      <span className="text-sm text-sky-400 font-mono">TG #{tgID}</span>
+      <span className="text-sm text-clay font-mono">TG #{tgID}</span>
       <button
         onClick={unlink}
         disabled={unlinking}

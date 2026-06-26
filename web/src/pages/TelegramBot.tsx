@@ -131,7 +131,7 @@ export default function TelegramBot() {
               className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-surface/[0.03] disabled:opacity-40"
             >
               <span className="flex items-center gap-3">
-                <Send size={16} className="text-blue-300" />
+                <Send size={16} className="text-clay" />
                 <span>
                   <span className="block text-sm text-zinc-100">Send admin DM test</span>
                   <span className="block text-xs text-zinc-500 mt-0.5">New-member private alert path</span>
@@ -161,7 +161,7 @@ export default function TelegramBot() {
               className="w-full px-4 py-4 flex items-center justify-between text-left hover:bg-surface/[0.03] disabled:opacity-40"
             >
               <span className="flex items-center gap-3">
-                <Megaphone size={16} className="text-purple-300" />
+                <Megaphone size={16} className="text-clay" />
                 <span>
                   <span className="block text-sm text-zinc-100">Post activity announcement</span>
                   <span className="block text-xs text-zinc-500 mt-0.5">Monthly check-in reward notice</span>

@@ -257,7 +257,7 @@ export default function Dashboard() {
                         <span className="text-[11px] font-mono text-red-400">{pct.toFixed(0)}%</span>
                       </div>
                       <div className="w-full h-1 rounded-full overflow-hidden" style={{ background: "rgba(20,20,19,0.08)" }}>
-                        <div className="h-full rounded-full" style={{ width: pct + "%", background: pct > 95 ? "#ef4444" : "#f59e0b" }} />
+                        <div className="h-full rounded-full" style={{ width: pct + "%", background: pct > 95 ? "#BE3A31" : "#C2843E" }} />
                       </div>
                     </div>
                   )
@@ -437,7 +437,7 @@ export default function Dashboard() {
                       {nh.length > 1 ? (
                         <ResponsiveContainer width="100%" height="100%">
                           <LineChart data={nh}>
-                            <Line type="monotone" dataKey="val" stroke={n.healthy ? "#22c55e" : "#ef4444"} strokeWidth={1.5} dot={false} />
+                            <Line type="monotone" dataKey="val" stroke={n.healthy ? "#3F8A4D" : "#BE3A31"} strokeWidth={1.5} dot={false} />
                           </LineChart>
                         </ResponsiveContainer>
                       ) : (
