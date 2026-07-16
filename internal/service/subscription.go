@@ -16,11 +16,12 @@ func GenerateSurge(user model.User, nodes []model.Node) string {
 
 func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRules []RoutingRule) string {
 	var lines []string
-	pc, hasChainConfig := EffectiveProxyChain(user)
+	aiPC, hasAIChain := EffectiveAIChain(user)
+	defPC, hasDefChain := EffectiveDefaultChain(user)
 	rs := BuildRuleSet(user, customRules...)
-	hasChain := rs.HasAI && hasChainConfig
+	emitAI := rs.HasAI && hasAIChain
 	aiPolicy := GroupAuto
-	if hasChain {
+	if emitAI {
 		aiPolicy = GroupAI
 	}
 	hongKongNames := hongKongNodeNames(nodes)
@@ -33,12 +34,13 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 	lines = append(lines, "loglevel = notify")
 	lines = append(lines, "skip-proxy = 127.0.0.1, 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local")
 	lines = append(lines, "proxy-test-url = "+proxyTestURL)
-	lines = append(lines, "test-timeout = 3")
+	lines = append(lines, "test-timeout = 5")
 	lines = append(lines, "")
 
 	lines = append(lines, "[Proxy]")
 	names := make([]string, len(nodes))
 	chainNames := make([]string, 0)
+	twNames := make([]string, 0)
 	vlessNames := make([]string, 0)
 
 	for i, n := range nodes {
@@ -55,31 +57,40 @@ func GenerateSurgeWithCustomRules(user model.User, nodes []model.Node, customRul
 			vlessNames = append(vlessNames, VlessName(n))
 		}
 
-		if hasChain {
+		if emitAI {
 			chainName := n.Name + "-AI"
-			chainProxy := fmt.Sprintf("%s = %s, %s, %d, username=%s, password=%s, underlying-proxy=%s",
-				chainName, pc.Type, pc.Host, pc.Port, pc.Username, pc.Password, n.Name)
-			lines = append(lines, chainProxy)
+			lines = append(lines, fmt.Sprintf("%s = %s, %s, %d, username=%s, password=%s, underlying-proxy=%s",
+				chainName, aiPC.Type, aiPC.Host, aiPC.Port, aiPC.Username, aiPC.Password, n.Name))
 			chainNames = append(chainNames, chainName)
+		}
+		if hasDefChain {
+			twName := n.Name + "-TW"
+			lines = append(lines, fmt.Sprintf("%s = %s, %s, %d, username=%s, password=%s, underlying-proxy=%s",
+				twName, defPC.Type, defPC.Host, defPC.Port, defPC.Username, defPC.Password, n.Name))
+			twNames = append(twNames, twName)
 		}
 	}
 	lines = append(lines, "")
 
-	names = append(names, vlessNames...)
+	pool := names
+	if hasDefChain && len(twNames) > 0 {
+		pool = twNames
+	}
+	pool = append(pool, vlessNames...)
 	lines = append(lines, "[Proxy Group]")
-	lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupAuto, strings.Join(names, ", "), proxyTestURL))
-	lines = append(lines, fmt.Sprintf("%s = select, %s", GroupManual, strings.Join(names, ", ")))
+	lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupAuto, strings.Join(pool, ", "), proxyTestURL))
+	lines = append(lines, fmt.Sprintf("%s = select, %s", GroupManual, strings.Join(pool, ", ")))
 	if len(hongKongNames) > 0 {
 		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupHongKong, strings.Join(hongKongNames, ", "), proxyTestURL))
 	}
-	if rs.HasAI && hasChain {
+	if emitAI {
 		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupAI, strings.Join(chainNames, ", "), proxyTestURL))
 	}
 	if rs.HasStreaming {
-		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupStreaming, strings.Join(names, ", "), proxyTestURL))
+		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupStreaming, strings.Join(pool, ", "), proxyTestURL))
 	}
 	if rs.HasGlobal {
-		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupGlobal, strings.Join(names, ", "), proxyTestURL))
+		lines = append(lines, fmt.Sprintf("%s = url-test, %s, url=%s, interval=300", GroupGlobal, strings.Join(pool, ", "), proxyTestURL))
 	}
 	lines = append(lines, "")
 
@@ -260,7 +271,7 @@ func GenerateShadowrocketWithCustomRules(user model.User, nodes []model.Node, cu
 	lines = append(lines, "bypass-system = true")
 	lines = append(lines, "skip-proxy = 127.0.0.1, 192.168.0.0/16, 10.0.0.0/8, 172.16.0.0/12, localhost, *.local")
 	lines = append(lines, "proxy-test-url = "+proxyTestURL)
-	lines = append(lines, "test-timeout = 3")
+	lines = append(lines, "test-timeout = 5")
 	lines = append(lines, "")
 
 	lines = append(lines, "[Proxy]")
