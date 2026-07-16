@@ -8,12 +8,22 @@ import (
 	"github.com/ludandaye/hy2board/internal/model"
 )
 
-// EffectiveProxyChain returns the proxy-chain config a user should actually use
-// for AI chain proxies. Priority:
-//  1. Per-user override (User.Proxy* fields)
-//  2. Global config (config.C.ProxyChain)
-//  3. Empty + false if neither is configured.
-func EffectiveProxyChain(u model.User) (config.ProxyChainConfig, bool) {
+// EffectiveAIChain returns the AI-exit chain (global US config.ProxyChain) for a
+// static-IP user (ChainProxy == true). Non-static users get no AI chain.
+func EffectiveAIChain(u model.User) (config.ProxyChainConfig, bool) {
+	if u.ChainProxy && config.C.HasProxyChain() {
+		return config.C.ProxyChain, true
+	}
+	return config.ProxyChainConfig{}, false
+}
+
+// EffectiveDefaultChain returns the default (non-AI, non-China) exit chain for a
+// static-IP user: per-user ProxyHost override if set, else the global Taiwan
+// config.ProxyChainDefault. Non-static users get no default chain.
+func EffectiveDefaultChain(u model.User) (config.ProxyChainConfig, bool) {
+	if !u.ChainProxy {
+		return config.ProxyChainConfig{}, false
+	}
 	if u.ProxyHost != "" && u.ProxyPort > 0 {
 		return config.ProxyChainConfig{
 			Type:     u.ProxyType,
@@ -23,8 +33,8 @@ func EffectiveProxyChain(u model.User) (config.ProxyChainConfig, bool) {
 			Password: u.ProxyPassword,
 		}, true
 	}
-	if config.C.HasProxyChain() {
-		return config.C.ProxyChain, true
+	if config.C.HasProxyChainDefault() {
+		return config.C.ProxyChainDefault, true
 	}
 	return config.ProxyChainConfig{}, false
 }
