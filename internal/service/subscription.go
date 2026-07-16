@@ -109,11 +109,12 @@ func GenerateClash(user model.User, nodes []model.Node) string {
 
 func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRules []RoutingRule) string {
 	var lines []string
-	pc, hasChainConfig := EffectiveProxyChain(user)
+	aiPC, hasAIChain := EffectiveAIChain(user)
+	defPC, hasDefChain := EffectiveDefaultChain(user)
 	rs := BuildRuleSet(user, customRules...)
-	hasChain := rs.HasAI && hasChainConfig
+	emitAI := rs.HasAI && hasAIChain
 	aiPolicy := GroupAuto
-	if hasChain {
+	if emitAI {
 		aiPolicy = GroupAI
 	}
 	hongKongNames := hongKongNodeNames(nodes)
@@ -131,6 +132,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 
 	names := make([]string, len(nodes))
 	chainNames := make([]string, 0)
+	twNames := make([]string, 0)
 	vlessNames := make([]string, 0)
 
 	for i, n := range nodes {
@@ -153,26 +155,42 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 			vlessNames = append(vlessNames, VlessName(n))
 		}
 
-		if hasChain {
+		if emitAI {
 			chainName := n.Name + "-AI"
 			lines = append(lines, fmt.Sprintf("  - name: \"%s\"", chainName))
-			lines = append(lines, fmt.Sprintf("    type: %s", pc.Type))
-			lines = append(lines, fmt.Sprintf("    server: %s", pc.Host))
-			lines = append(lines, fmt.Sprintf("    port: %d", pc.Port))
-			lines = append(lines, fmt.Sprintf("    username: %s", pc.Username))
-			lines = append(lines, fmt.Sprintf("    password: %s", pc.Password))
+			lines = append(lines, fmt.Sprintf("    type: %s", aiPC.Type))
+			lines = append(lines, fmt.Sprintf("    server: %s", aiPC.Host))
+			lines = append(lines, fmt.Sprintf("    port: %d", aiPC.Port))
+			lines = append(lines, fmt.Sprintf("    username: %s", aiPC.Username))
+			lines = append(lines, fmt.Sprintf("    password: %s", aiPC.Password))
 			lines = append(lines, fmt.Sprintf("    dialer-proxy: %s", n.Name))
 			lines = append(lines, "")
 			chainNames = append(chainNames, chainName)
 		}
+		if hasDefChain {
+			twName := n.Name + "-TW"
+			lines = append(lines, fmt.Sprintf("  - name: \"%s\"", twName))
+			lines = append(lines, fmt.Sprintf("    type: %s", defPC.Type))
+			lines = append(lines, fmt.Sprintf("    server: %s", defPC.Host))
+			lines = append(lines, fmt.Sprintf("    port: %d", defPC.Port))
+			lines = append(lines, fmt.Sprintf("    username: %s", defPC.Username))
+			lines = append(lines, fmt.Sprintf("    password: %s", defPC.Password))
+			lines = append(lines, fmt.Sprintf("    dialer-proxy: %s", n.Name))
+			lines = append(lines, "")
+			twNames = append(twNames, twName)
+		}
 	}
 
-	names = append(names, vlessNames...)
+	pool := names
+	if hasDefChain && len(twNames) > 0 {
+		pool = twNames
+	}
+	pool = append(pool, vlessNames...)
 	lines = append(lines, "proxy-groups:")
 	lines = append(lines, "  - name: "+GroupAuto)
 	lines = append(lines, "    type: url-test")
 	lines = append(lines, "    proxies:")
-	for _, name := range names {
+	for _, name := range pool {
 		lines = append(lines, fmt.Sprintf("      - \"%s\"", name))
 	}
 	lines = append(lines, "    url: "+proxyTestURL)
@@ -181,7 +199,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 	lines = append(lines, "  - name: "+GroupManual)
 	lines = append(lines, "    type: select")
 	lines = append(lines, "    proxies:")
-	for _, name := range names {
+	for _, name := range pool {
 		lines = append(lines, fmt.Sprintf("      - \"%s\"", name))
 	}
 
@@ -196,7 +214,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 		lines = append(lines, "    interval: 300")
 	}
 
-	if rs.HasAI && hasChain {
+	if emitAI {
 		lines = append(lines, "  - name: "+GroupAI)
 		lines = append(lines, "    type: url-test")
 		lines = append(lines, "    proxies:")
@@ -211,7 +229,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 		lines = append(lines, "  - name: "+GroupStreaming)
 		lines = append(lines, "    type: url-test")
 		lines = append(lines, "    proxies:")
-		for _, name := range names {
+		for _, name := range pool {
 			lines = append(lines, fmt.Sprintf("      - \"%s\"", name))
 		}
 		lines = append(lines, "    url: "+proxyTestURL)
@@ -222,7 +240,7 @@ func GenerateClashWithCustomRules(user model.User, nodes []model.Node, customRul
 		lines = append(lines, "  - name: "+GroupGlobal)
 		lines = append(lines, "    type: url-test")
 		lines = append(lines, "    proxies:")
-		for _, name := range names {
+		for _, name := range pool {
 			lines = append(lines, fmt.Sprintf("      - \"%s\"", name))
 		}
 		lines = append(lines, "    url: "+proxyTestURL)
