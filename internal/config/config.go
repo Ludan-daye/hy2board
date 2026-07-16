@@ -49,6 +49,7 @@ type Config struct {
 	JWT        JWTConfig        `yaml:"jwt"`
 	Database   DatabaseConfig   `yaml:"database"`
 	ProxyChain ProxyChainConfig `yaml:"proxy_chain"`
+	ProxyChainDefault ProxyChainConfig `yaml:"proxy_chain_default"`
 	Telegram   TelegramConfig   `yaml:"telegram"`
 	Node       NodeConfig       `yaml:"node"`
 }
@@ -65,6 +66,10 @@ func (c *Config) JWTExpiry() time.Duration {
 
 func (c *Config) HasProxyChain() bool {
 	return c.ProxyChain.Host != "" && c.ProxyChain.Port > 0
+}
+
+func (c *Config) HasProxyChainDefault() bool {
+	return c.ProxyChainDefault.Host != "" && c.ProxyChainDefault.Port > 0
 }
 
 func (c *Config) HasTelegram() bool {
