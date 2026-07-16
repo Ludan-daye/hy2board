@@ -233,7 +233,7 @@ func BuildRuleSet(u model.User, customRules ...RoutingRule) RuleSet {
 		}
 	}
 	rs.Rules = append(rs.Rules, customRules...)
-	if u.RuleAI || u.ChainProxy {
+	if u.RuleAI {
 		rs.HasAI = true
 		rs.Rules = append(rs.Rules, aiRules.Rules...)
 	}

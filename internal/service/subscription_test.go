@@ -49,7 +49,9 @@ func TestAIUsesChainWhenConfigured(t *testing.T) {
 	}
 	defer func() { config.C = config.Config{} }()
 
-	got := GenerateClash(testRuleUser(), testNodes())
+	u := testRuleUser()
+	u.ChainProxy = true // AI chain now requires the user be a static-IP user
+	got := GenerateClash(u, testNodes())
 	for _, want := range []string{
 		"DOMAIN-SUFFIX,chatgpt.com,AI",
 		"  - name: \"JP-AI\"",
@@ -192,7 +194,7 @@ func TestCustomAIRuleCreatesAIGroupWhenChainConfigured(t *testing.T) {
 
 	user := testRuleUser()
 	user.RuleAI = false
-	user.ChainProxy = false
+	user.ChainProxy = true // static-IP user; the custom AI rule drives the AI group
 	custom := []RoutingRule{{Kind: RuleDomainSuffix, Value: "ai-only.example", Policy: GroupAI}}
 
 	got := GenerateClashWithCustomRules(user, testNodes(), custom)

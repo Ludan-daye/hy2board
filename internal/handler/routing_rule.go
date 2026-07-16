@@ -91,7 +91,7 @@ func PreviewRoutingRule(c *gin.Context) {
 	routingRule := service.CustomRoutingRuleToRoutingRule(rule)
 	var nodes []model.Node
 	database.DB.Where("healthy = ?", true).Order("sort_order asc, id asc").Find(&nodes)
-	_, hasChain := service.EffectiveProxyChain(model.User{})
+	_, hasChain := service.EffectiveAIChain(model.User{ChainProxy: true})
 	hasHongKong := len(serviceHongKongNodeNames(nodes)) > 0
 	line := service.ResolveRoutingRuleLine(routingRule, hasChain, hasHongKong)
 	c.JSON(http.StatusOK, gin.H{
