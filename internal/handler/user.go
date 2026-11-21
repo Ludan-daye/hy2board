@@ -150,20 +150,7 @@ func ListUsers(c *gin.Context) {
 			row.NextResetAt = &next
 		}
 
-		// TodayTraffic: 24h delta from cumulative counter snapshots
-		// (per-node MAX-MIN, summed across nodes; raw SUM would double-count).
-		var lastDay struct {
-			SumTX int64
-			SumRX int64
-		}
-		database.DB.Raw(`
-			SELECT COALESCE(SUM(dtx),0) AS sum_tx, COALESCE(SUM(drx),0) AS sum_rx FROM (
-				SELECT MAX(tx)-MIN(tx) AS dtx, MAX(rx)-MIN(rx) AS drx
-				FROM traffic_logs
-				WHERE username = ? AND sampled_at >= ?
-				GROUP BY node_id
-			)`, u.Username, time.Now().Add(-24*time.Hour)).Scan(&lastDay)
-		row.TodayTraffic = lastDay.SumTX + lastDay.SumRX
+		row.TodayTraffic = service.TodayTrafficFor(u.Username).Total()
 
 		out = append(out, row)
 	}

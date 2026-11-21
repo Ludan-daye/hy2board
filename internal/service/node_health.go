@@ -6,12 +6,14 @@ import (
 	"net"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"github.com/ludandaye/hy2board/internal/config"
 	"github.com/ludandaye/hy2board/internal/database"
 	"github.com/ludandaye/hy2board/internal/model"
+	"gorm.io/gorm"
 )
 
 const (
@@ -49,10 +51,32 @@ func runNodeHealthCheck() {
 		log.Printf("node probe: list nodes failed: %v", err)
 		return
 	}
+	var wg sync.WaitGroup
+	sem := make(chan struct{}, 4)
 	for _, n := range nodes {
-		probeNode(n)
+		wg.Add(1)
+		sem <- struct{}{}
+		go func(n model.Node) {
+			defer wg.Done()
+			defer func() { <-sem }()
+			probeNode(n)
+		}(n)
 	}
-	database.DB.Where("checked_at < ?", time.Now().Add(-nodeProbeResultKeep)).Delete(&model.NodeProbeResult{})
+	wg.Wait()
+	if _, err := pruneNodeProbeResults(database.DB, time.Now().Add(-nodeProbeResultKeep)); err != nil {
+		log.Printf("node probe: prune results failed: %v", err)
+	}
+}
+
+// pruneNodeProbeResults removes expired probe results permanently. model.NodeProbeResult
+// embeds gorm.Model, so a scoped Delete would only stamp deleted_at and the table
+// would keep growing forever.
+func pruneNodeProbeResults(db *gorm.DB, cutoff time.Time) (int64, error) {
+	result := db.Unscoped().Where("checked_at < ?", cutoff).Delete(&model.NodeProbeResult{})
+	if result.Error != nil {
+		return 0, fmt.Errorf("prune node probe results older than %s: %w", cutoff.UTC().Format(time.RFC3339), result.Error)
+	}
+	return result.RowsAffected, nil
 }
 
 func probeNode(n model.Node) {

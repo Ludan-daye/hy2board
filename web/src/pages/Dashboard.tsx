@@ -114,9 +114,7 @@ export default function Dashboard() {
     traffic_24h_rx: number
   }[]>([])
 
-  const load = () => {
-    api.get("/admin/static-ips").then(r => setStaticIPs(r.data || []))
-    api.get("/admin/payments/summary?n=2").then(r => setIncome(r.data || []))
+  const loadLive = () => {
     Promise.all([api.get("/admin/stats"), api.get("/admin/users")]).then(([s, u]) => {
       const sd = s.data as Stats
       setStats(sd)
@@ -132,7 +130,22 @@ export default function Dashboard() {
     })
   }
 
-  useEffect(() => { load(); const t = setInterval(load, 5000); return () => clearInterval(t) }, [])
+  const loadSlow = () => {
+    api.get("/admin/static-ips").then(r => setStaticIPs(r.data || []))
+    api.get("/admin/payments/summary?n=2").then(r => setIncome(r.data || []))
+  }
+
+  useEffect(() => {
+    loadLive()
+    const t = setInterval(loadLive, 5000)
+    return () => clearInterval(t)
+  }, [])
+
+  useEffect(() => {
+    loadSlow()
+    const t = setInterval(loadSlow, 30000)
+    return () => clearInterval(t)
+  }, [])
 
   if (!stats) return <p className="text-zinc-500 p-8">Loading...</p>
 

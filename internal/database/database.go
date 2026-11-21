@@ -3,6 +3,7 @@ package database
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/ludandaye/hy2board/internal/model"
@@ -13,6 +14,13 @@ import (
 
 var DB *gorm.DB
 
+func sqliteDSN(path string) string {
+	if strings.Contains(path, "?") || strings.HasPrefix(path, "file:") {
+		return path
+	}
+	return path + "?_busy_timeout=5000&_journal_mode=WAL&_synchronous=NORMAL&_txlock=immediate"
+}
+
 func Init(dbPath string) error {
 	dir := filepath.Dir(dbPath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
@@ -20,11 +28,15 @@ func Init(dbPath string) error {
 	}
 
 	var err error
-	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
+	DB, err = gorm.Open(sqlite.Open(sqliteDSN(dbPath)), &gorm.Config{
 		Logger: logger.Default.LogMode(logger.Silent),
 	})
 	if err != nil {
 		return err
+	}
+	if sqlDB, err := DB.DB(); err == nil {
+		sqlDB.SetMaxOpenConns(4)
+		sqlDB.SetMaxIdleConns(4)
 	}
 
 	if err := DB.AutoMigrate(&model.User{}, &model.Node{}, &model.Plan{}, &model.TrafficLog{}, &model.Setting{}, &model.Checkin{}, &model.Payment{}, &model.Cost{}, &model.NodeProbeResult{}, &model.NodeProbeState{}, &model.AuditLog{}, &model.CustomRoutingRule{}); err != nil {

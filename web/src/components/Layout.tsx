@@ -16,8 +16,7 @@ const nav = [
   { to: "/downloads", icon: Download, label: "Downloads", desc: "Client apps" },
 ]
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const location = useLocation()
+function SidebarClock() {
   const [time, setTime] = useState("")
 
   useEffect(() => {
@@ -26,6 +25,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     const t = setInterval(tick, 1000)
     return () => clearInterval(t)
   }, [])
+
+  return <span className="text-[10px] font-mono text-ink-faint">{time}</span>
+}
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const location = useLocation()
 
   const logout = () => {
     localStorage.removeItem("token")
@@ -110,7 +115,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-semibold tracking-[0.15em] text-ink-faint uppercase">System</span>
-              <span className="text-[10px] font-mono text-ink-faint">{time}</span>
+              <SidebarClock />
             </div>
             <div className="flex items-center gap-2">
               <span className="relative flex h-2 w-2">

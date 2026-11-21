@@ -88,7 +88,7 @@ func probeStaticIP(p model.Plan) {
 
 	dialer, err := proxy.SOCKS5("tcp", addr, auth, &net.Dialer{Timeout: 5 * time.Second})
 	if err != nil {
-		recordFailure(h, fmt.Sprintf("socks5 dialer error: %v", err))
+		recordFailure(h, p.Name, fmt.Sprintf("socks5 dialer error: %v", err))
 		return
 	}
 
@@ -105,7 +105,7 @@ func probeStaticIP(p model.Plan) {
 	resp, err := client.Do(req)
 	rtt := int(time.Since(start) / time.Millisecond)
 	if err != nil {
-		recordFailure(h, fmt.Sprintf("ipify req: %v", err))
+		recordFailure(h, p.Name, fmt.Sprintf("ipify req: %v", err))
 		return
 	}
 	defer resp.Body.Close()
@@ -124,12 +124,12 @@ func probeStaticIP(p model.Plan) {
 		p.Name, p.ProxyHost, rtt, ipResp.IP)
 }
 
-func recordFailure(h *StaticIPHealth, reason string) {
+func recordFailure(h *StaticIPHealth, planName, reason string) {
 	h.FailStreak++
 	h.LastExitIP = ""
 	h.LastRTTms = 0
 	if h.FailStreak >= 2 {
 		h.Healthy = false
 	}
-	log.Printf("static-ip probe: failure streak=%d reason=%s", h.FailStreak, reason)
+	log.Printf("static-ip probe: plan=%s failure streak=%d reason=%s", planName, h.FailStreak, reason)
 }

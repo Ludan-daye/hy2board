@@ -37,6 +37,7 @@ func main() {
 	service.StartAutoResetScheduler(60 * time.Second)
 	service.StartUserBucketCache(30 * time.Second)
 	service.StartTrafficLogger(60 * time.Second)
+	service.StartTodayTrafficCache(30 * time.Second)
 	service.StartTelegramBot()
 	service.StartDailyPoster()
 	service.StartWeeklyLeaderboard()

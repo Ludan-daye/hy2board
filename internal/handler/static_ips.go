@@ -41,7 +41,6 @@ func ListStaticIPs(c *gin.Context) {
 	database.DB.Where("proxy_host <> ''").Order("sort_order asc, id asc").Find(&plans)
 
 	rows := make([]StaticIPRow, 0, len(plans))
-	cutoff := time.Now().Add(-24 * time.Hour)
 
 	for _, p := range plans {
 		row := StaticIPRow{
@@ -65,22 +64,12 @@ func ListStaticIPs(c *gin.Context) {
 		var users []model.User
 		database.DB.Where("plan_id = ?", p.ID).Find(&users)
 		for _, u := range users {
-			// traffic_logs.tx/rx are CUMULATIVE counter snapshots (monotonic per
-			// node until reset), so SUM double-counts. 24h delta = per-node
-			// MAX-MIN, summed across nodes.
-			var sums struct{ TX, RX int64 }
-			database.DB.Raw(`
-				SELECT COALESCE(SUM(dtx),0) AS tx, COALESCE(SUM(drx),0) AS rx FROM (
-					SELECT MAX(tx)-MIN(tx) AS dtx, MAX(rx)-MIN(rx) AS drx
-					FROM traffic_logs
-					WHERE username = ? AND sampled_at >= ?
-					GROUP BY node_id
-				)`, u.Username, cutoff).Scan(&sums)
+			sums := service.TodayTrafficFor(u.Username)
 			row.Users = append(row.Users, staticIPUserBrief{
 				ID:         u.ID,
 				Username:   u.Username,
 				ExpiresAt:  u.ExpiresAt,
-				Traffic24h: sums.TX + sums.RX,
+				Traffic24h: sums.Total(),
 			})
 			row.Traffic24hTX += sums.TX
 			row.Traffic24hRX += sums.RX
